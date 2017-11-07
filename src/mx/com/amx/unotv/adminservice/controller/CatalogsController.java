@@ -18,7 +18,7 @@ import mx.com.amx.unotv.adminservice.model.response.CatalogResponse;
 import mx.com.amx.unotv.adminservice.model.response.CategoriaSeccionResponse;
 import mx.com.amx.unotv.adminservice.model.response.UserResponse;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CatalogsController.
  */

@@ -21,9 +21,14 @@
 
 	<!-- Llamadas WS -->
 	<bean id="catalogsCallWS" class="mx.com.amx.unotv.adminservice.ws.CatalogsCallWS"></bean>
-
+	<bean id="itemsCallWS" class="mx.com.amx.unotv.adminservice.ws.ItemsCallWS"></bean>
+	
 	<!-- Business Object -->
 	<bean id="catalogsBO" class="mx.com.amx.unotv.adminservice.bo.CatalogsBO"></bean>
+	<bean id="itemsBO" class="mx.com.amx.unotv.adminservice.bo.ItemsBO"></bean>
+
+
+
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
