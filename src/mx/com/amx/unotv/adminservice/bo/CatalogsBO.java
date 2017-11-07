@@ -66,23 +66,42 @@ public class CatalogsBO {
 		return lista;
 	}
 
-	public List<UserResponse> getAllUsers() {
+	public List<UserResponse> getAllUsers() throws CatalogsBOException {
 		List<UserResponse> lista = null;
 
+		
+		try {
+			lista = catalogsCallWS.getAllUsers();
+		} catch (Exception e) {
+			logger.error("Exception getAllUsers  [ CatalogsBO ]: ", e);
+			throw new CatalogsBOException(e.getMessage());
+		}
 		return lista;
 
 	}
 
-	public List<CategoriaSeccionResponse> getAllSection() {
+	public List<CategoriaSeccionResponse> getAllSection() throws CatalogsBOException {
 		List<CategoriaSeccionResponse> lista = null;
 
+		try {
+			lista = catalogsCallWS.getAllSection();
+		} catch (Exception e) {
+			logger.error("Exception getAllSection  [ CatalogsBO ]: ", e);
+			throw new CatalogsBOException(e.getMessage());
+		}
 		return lista;
 
 	}
 
-	public List<CatalogResponse> getAllTags() {
+	public List<CatalogResponse> getAllTags() throws CatalogsBOException {
 		List<CatalogResponse> lista = null;
 
+		try {
+			lista = catalogsCallWS.getAllTags();
+		} catch (Exception e) {
+			logger.error("Exception getAllSection  [ CatalogsBO ]: ", e);
+			throw new CatalogsBOException(e.getMessage());
+		}
 		return lista;
 	}
 

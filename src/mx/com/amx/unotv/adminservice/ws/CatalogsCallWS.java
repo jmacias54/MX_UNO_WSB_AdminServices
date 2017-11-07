@@ -3,7 +3,7 @@
  */
 package mx.com.amx.unotv.adminservice.ws;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -20,11 +20,13 @@ import org.springframework.web.client.RestTemplate;
 import mx.com.amx.unotv.adminservice.model.Categoria;
 import mx.com.amx.unotv.adminservice.model.Pcode;
 import mx.com.amx.unotv.adminservice.model.response.CatalogResponse;
+import mx.com.amx.unotv.adminservice.model.response.CatalogWSResponse;
 import mx.com.amx.unotv.adminservice.model.response.CategoriaSeccionResponse;
 import mx.com.amx.unotv.adminservice.model.response.CategoriaSeccionWSResponse;
 import mx.com.amx.unotv.adminservice.model.response.CategoriaWSResponse;
 import mx.com.amx.unotv.adminservice.model.response.PcodeListResponse;
 import mx.com.amx.unotv.adminservice.model.response.UserResponse;
+import mx.com.amx.unotv.adminservice.model.response.UserWSResponse;
 import mx.com.amx.unotv.adminservice.ws.exception.CatalogsCallWSException;
 
 
@@ -176,24 +178,105 @@ public class CatalogsCallWS {
 		return response.getLista();
 	}
 
-	public List<UserResponse> getAllUsers() {
-		List<UserResponse> lista = null;
+	public List<UserResponse> getAllUsers() throws CatalogsCallWSException {
+		UserWSResponse response = new UserWSResponse();
 
-		return lista;
+		String metodo = "/get_users";
+		String URL_WS = URL_WS_BASE + URL_WS_CATALOGS + metodo;
+
+		logger.info("--- getAllUsers --- [ CatalogsCallWS ] --- ");
+		logger.info("--- URL : "+URL_WS);
+		
+		
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			response = restTemplate.postForObject(URL_WS , entity, UserWSResponse.class);
+
+			logger.info(" Registros obtenidos --> " + response.getLista().toString());
+			logger.info(" Total Registros obtenidos --> " + response.getLista().size());
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException getAllUsers [ CatalogsCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getAllUsers [ CatalogsCallWS ]: ", rre);
+			throw new CatalogsCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception getAllUsers  [ CatalogsCallWS ]: ", e);
+			throw new CatalogsCallWSException(e.getMessage());
+		}
+		
+		
+
+		return response.getLista();
 
 	}
 
-	public List<CategoriaSeccionResponse> getAllSection() {
-		List<CategoriaSeccionResponse> lista = null;
+	public List<CategoriaSeccionResponse> getAllSection() throws CatalogsCallWSException {
+		String metodo = "/get_section";
+		String URL_WS = URL_WS_BASE + URL_WS_CATALOGS + metodo;
 
-		return lista;
+		logger.info("--- getAllSection --- [ CatalogsCallWS ] --- ");
+		logger.info("--- URL : "+URL_WS);
+		
+		CategoriaSeccionWSResponse request = new CategoriaSeccionWSResponse();
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			request = restTemplate.postForObject(URL_WS , entity, CategoriaSeccionWSResponse.class);
+
+			logger.info(" Registros obtenidos --> " + request.getLista().toString());
+			logger.info(" Total Registros obtenidos --> " + request.getLista().size());
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException getAllSection [ CatalogsCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getAllSection [ CatalogsCallWS ]: ", rre);
+			throw new CatalogsCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception getAllSection  [ CatalogsCallWS ]: ", e);
+			throw new CatalogsCallWSException(e.getMessage());
+		}
+		
+		
+
+		return request.getLista();
 
 	}
 
-	public List<CatalogResponse> getAllTags() {
-		List<CatalogResponse> lista = null;
+	public List<CatalogResponse> getAllTags() throws CatalogsCallWSException {
+		
+		String metodo = "/get_tags";
+		String URL_WS = URL_WS_BASE + URL_WS_CATALOGS + metodo;
 
-		return lista;
+		logger.info("--- getAllSection --- [ CatalogsCallWS ] --- ");
+		logger.info("--- URL : "+URL_WS);
+		
+		CatalogWSResponse response = new CatalogWSResponse();
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			response = restTemplate.postForObject(URL_WS , entity, CatalogWSResponse.class);
+
+			logger.info(" Registros obtenidos --> " + response.getLista().toString());
+			logger.info(" Total Registros obtenidos --> " + response.getLista().size());
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException getAllSection [ CatalogsCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getAllSection [ CatalogsCallWS ]: ", rre);
+			throw new CatalogsCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception getAllSection  [ CatalogsCallWS ]: ", e);
+			throw new CatalogsCallWSException(e.getMessage());
+		}
+		
+		
+
+		return response.getLista();
 	}
 
 
