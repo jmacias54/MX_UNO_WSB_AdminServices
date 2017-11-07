@@ -15,14 +15,15 @@
 	<context:annotation-config />
 
 
-	<context:component-scan base-package="mx.com.amx.unotv.parametros" />
+	<context:component-scan base-package="mx.com.amx.unotv.adminservice" />
 
 
 
+	<!-- Llamadas WS -->
+	<bean id="catalogsCallWS" class="mx.com.amx.unotv.adminservice.ws.CatalogsCallWS"></bean>
 
-	<bean id="parametrosBO" class="mx.com.amx.unotv.parametros.bo.ParametrosBO"></bean>
-
-	<bean id="llamadasWSBO" class="mx.com.amx.unotv.parametros.bo.LlamadasWSBO"></bean>
+	<!-- Business Object -->
+	<bean id="catalogsBO" class="mx.com.amx.unotv.adminservice.bo.CatalogsBO"></bean>
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
