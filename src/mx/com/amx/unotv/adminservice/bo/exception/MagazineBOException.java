@@ -7,27 +7,28 @@ package mx.com.amx.unotv.adminservice.bo.exception;
  * @author Jesus A. Macias Benitez
  *
  */
-public class ItemsBOException extends Exception {
+public class MagazineBOException extends Exception {
 
 	
 	private static final long serialVersionUID = 1L;
 
-	public ItemsBOException() {
+	public MagazineBOException() {
 		super();
 	}
 
 	
-	public ItemsBOException(String message, Throwable cause) {
+	public MagazineBOException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	
-	public ItemsBOException(String message) {
+	public MagazineBOException(String message) {
 		super(message);
 	}
 
-	public ItemsBOException(Throwable cause) {
+	public MagazineBOException(Throwable cause) {
 		super(cause);
 	}
+
 
 }
