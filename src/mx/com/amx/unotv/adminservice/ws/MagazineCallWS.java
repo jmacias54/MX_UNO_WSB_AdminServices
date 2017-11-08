@@ -7,15 +7,20 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import mx.com.amx.unotv.adminservice.model.Magazine;
 import mx.com.amx.unotv.adminservice.model.response.ItemsResponse;
+import mx.com.amx.unotv.adminservice.model.response.ItemsWSResponse;
+import mx.com.amx.unotv.adminservice.model.response.ListMagazine;
+import mx.com.amx.unotv.adminservice.ws.exception.MagazineCallWSException;
 
 /**
  * @author Jesus A. Macias Benitez
@@ -62,19 +67,69 @@ public class MagazineCallWS {
 	}
 	
 	
-	public List<ItemsResponse> getListItemsByMagazine(String idMagazine) {
+	public List<ItemsResponse> getListItemsByMagazine(String idMagazine) throws MagazineCallWSException {
 
-		List<ItemsResponse> lista = null;
+		String metodo = "/get_magazine";
+		String URL_WS = URL_WS_BASE + URL_WS_MAGAZINE+ metodo;
 
-		return lista;
+		logger.info("--- getListItemsByMagazine --- [ MagazineCallWS ] --- ");
+		logger.info("--- URL : "+URL_WS);
+		
+		ItemsWSResponse response = new ItemsWSResponse();
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			response = restTemplate.postForObject(URL_WS + "/"+idMagazine, entity, ItemsWSResponse.class);
+
+			logger.info(" Registros obtenidos --> " + response.getLista().toString());
+			logger.info(" Total Registros obtenidos --> " + response.getLista().size());
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException getListItemsByMagazine [ MagazineCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getListItemsByMagazine[ MagazineCallWS ]: ", rre);
+			throw new MagazineCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception getListItemsByMagazine  [ MagazineCallWS ]: ", e);
+			throw new MagazineCallWSException(e.getMessage());
+		}
+		
+		return response.getLista();
 
 	}
 
-	public List<Magazine> getListMagazine() {
+	public List<Magazine> getListMagazine() throws MagazineCallWSException {
 
-		List<Magazine> lista = null;
+	
+		String metodo = "/get_magazine";
+		String URL_WS = URL_WS_BASE + URL_WS_MAGAZINE+ metodo;
 
-		return lista;
+		logger.info("--- getListMagazine --- [ MagazineCallWS ] --- ");
+		logger.info("--- URL : "+URL_WS);
+		
+		ListMagazine response = new ListMagazine();
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			response = restTemplate.postForObject(URL_WS , entity, ListMagazine.class);
+
+			logger.info(" Registros obtenidos --> " + response.getLista().toString());
+			logger.info(" Total Registros obtenidos --> " + response.getLista().size());
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException getListMagazine [ MagazineCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getListMagazine[ MagazineCallWS ]: ", rre);
+			throw new MagazineCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception getListMagazine  [ MagazineCallWS ]: ", e);
+			throw new MagazineCallWSException(e.getMessage());
+		}
+		
+		return response.getLista();
+
 
 	}
 
