@@ -37,9 +37,9 @@ public class MagazineController {
 	/**
 	 * Gets the list items by magazine.
 	 *
-	 * @param idMagazine the id magazine
-	 * @return the list items by magazine
-	 * @throws ControllerException the controller exception
+	 * @param String idMagazine
+	 * @return List<ItemsResponse>
+	 * @throws ControllerException 
 	 */
 	@RequestMapping(value = "/get_magazine/{idMagazine}", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
@@ -58,8 +58,8 @@ public class MagazineController {
 	/**
 	 * Gets the list magazine.
 	 *
-	 * @return the list magazine
-	 * @throws ControllerException the controller exception
+	 * @return List<Magazine>
+	 * @throws ControllerException 
 	 */
 	@RequestMapping(value = "/get_list_magazine", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
@@ -79,8 +79,8 @@ public class MagazineController {
 	/**
 	 * Save magazine.
 	 *
-	 * @param req the req
-	 * @throws ControllerException the controller exception
+	 * @param MagazineRequest
+	 * @throws ControllerException 
 	 */
 	@RequestMapping(value = "/save_magazine", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody

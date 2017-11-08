@@ -22,10 +22,14 @@
 	<!-- Llamadas WS -->
 	<bean id="catalogsCallWS" class="mx.com.amx.unotv.adminservice.ws.CatalogsCallWS"></bean>
 	<bean id="itemsCallWS" class="mx.com.amx.unotv.adminservice.ws.ItemsCallWS"></bean>
+	<bean id="detailCallWS" class="mx.com.amx.unotv.adminservice.ws.DetailCallWS"></bean>
+	<bean id="magazineCallWS" class="mx.com.amx.unotv.adminservice.ws.MagazineCallWS"></bean>
 	
 	<!-- Business Object -->
 	<bean id="catalogsBO" class="mx.com.amx.unotv.adminservice.bo.CatalogsBO"></bean>
 	<bean id="itemsBO" class="mx.com.amx.unotv.adminservice.bo.ItemsBO"></bean>
+	<bean id="detailBO" class="mx.com.amx.unotv.adminservice.bo.DetailBO"></bean>
+	<bean id="magazineBO" class="mx.com.amx.unotv.adminservice.bo.MagazineBO"></bean>
 
 
 

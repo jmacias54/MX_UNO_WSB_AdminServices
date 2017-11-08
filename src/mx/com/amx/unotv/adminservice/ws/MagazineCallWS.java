@@ -17,6 +17,7 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import mx.com.amx.unotv.adminservice.model.Magazine;
+import mx.com.amx.unotv.adminservice.model.request.MagazineRequest;
 import mx.com.amx.unotv.adminservice.model.response.ItemsResponse;
 import mx.com.amx.unotv.adminservice.model.response.ItemsWSResponse;
 import mx.com.amx.unotv.adminservice.model.response.ListMagazine;
@@ -102,7 +103,7 @@ public class MagazineCallWS {
 	public List<Magazine> getListMagazine() throws MagazineCallWSException {
 
 	
-		String metodo = "/get_magazine";
+		String metodo = "/get_list_magazine";
 		String URL_WS = URL_WS_BASE + URL_WS_MAGAZINE+ metodo;
 
 		logger.info("--- getListMagazine --- [ MagazineCallWS ] --- ");
@@ -131,6 +132,11 @@ public class MagazineCallWS {
 		return response.getLista();
 
 
+	}
+	
+	
+	public void saveMagazine(MagazineRequest req) {
+		
 	}
 
 }

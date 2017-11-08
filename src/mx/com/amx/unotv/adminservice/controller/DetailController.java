@@ -42,7 +42,7 @@ public class DetailController {
 	 * @return int
 	 * @throws ControllerException 
 	 */
-	@RequestMapping(value = "/save_item", method = RequestMethod.PUT, headers = "Accept=application/json; charset=utf-8")
+	@RequestMapping(value = "/save_item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
 	public int insertNota(@RequestBody NNota nota) throws ControllerException {
 		logger.info("--- ItemsController-----");
