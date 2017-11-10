@@ -18,13 +18,13 @@ public class Magazine implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** The fc id magazine. */
-	private int fcIdMagazine;
+	private String fcIdMagazine;
 	
 	/** The fc descripcion. */
 	private String fcDescripcion;
 	
-	/** The fi registris. */
-	private int fiRegistris;
+	/** The fi fiRegistros. */
+	private int fiRegistros;
 	
 	/** The fi estatus. */
 	private int fiEstatus;
@@ -40,7 +40,7 @@ public class Magazine implements Serializable {
 	 *
 	 * @return the fc id magazine
 	 */
-	public int getFcIdMagazine() {
+	public String getFcIdMagazine() {
 		return this.fcIdMagazine;
 	}
 
@@ -49,7 +49,7 @@ public class Magazine implements Serializable {
 	 *
 	 * @param fcIdMagazine the new fc id magazine
 	 */
-	public void setFcIdMagazine(int fcIdMagazine) {
+	public void setFcIdMagazine(String fcIdMagazine) {
 		this.fcIdMagazine = fcIdMagazine;
 	}
 
@@ -90,21 +90,21 @@ public class Magazine implements Serializable {
 	}
 
 	/**
-	 * Gets the fi registris.
+	 * Gets the fiRegistros.
 	 *
-	 * @return the fi registris
+	 * @return the fiRegistros
 	 */
-	public int getFiRegistris() {
-		return this.fiRegistris;
+	public int getFiRegistros() {
+		return this.fiRegistros;
 	}
 
 	/**
-	 * Sets the fi registris.
+	 * Sets the fiRegistros.
 	 *
-	 * @param fiRegistris the new fi registris
+	 * @param fiRegistris the new fiRegistros
 	 */
-	public void setFiRegistris(int fiRegistris) {
-		this.fiRegistris = fiRegistris;
+	public void setFiRegistros(int fiRegistros) {
+		this.fiRegistros = fiRegistros;
 	}
 
 	
