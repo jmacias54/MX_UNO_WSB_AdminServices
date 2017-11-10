@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-
 // TODO: Auto-generated Javadoc
 /**
  * The persistent class for the uno_n_nota database table.
@@ -16,14 +14,16 @@ import java.util.Date;
  *
  */
 public class NNota implements Serializable {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The date format. */
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-	
+	private String FcPCode;
+
+	private String fcIdSeccion;
 	/** The fc id contenido. */
 	private String fcIdContenido;
 
@@ -126,7 +126,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc id contenido.
 	 *
-	 * @param fcIdContenido the new fc id contenido
+	 * @param fcIdContenido
+	 *            the new fc id contenido
 	 */
 	public void setFcIdContenido(String fcIdContenido) {
 		this.fcIdContenido = fcIdContenido;
@@ -144,7 +145,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the cl galeria.
 	 *
-	 * @param clGaleria the new cl galeria
+	 * @param clGaleria
+	 *            the new cl galeria
 	 */
 	public void setClGaleria(String clGaleria) {
 		this.clGaleria = clGaleria;
@@ -162,7 +164,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the cl rtf contenido.
 	 *
-	 * @param clRtfContenido the new cl rtf contenido
+	 * @param clRtfContenido
+	 *            the new cl rtf contenido
 	 */
 	public void setClRtfContenido(String clRtfContenido) {
 		this.clRtfContenido = clRtfContenido;
@@ -180,7 +183,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc alternative text ooyala.
 	 *
-	 * @param fcAlternativeTextOoyala the new fc alternative text ooyala
+	 * @param fcAlternativeTextOoyala
+	 *            the new fc alternative text ooyala
 	 */
 	public void setFcAlternativeTextOoyala(String fcAlternativeTextOoyala) {
 		this.fcAlternativeTextOoyala = fcAlternativeTextOoyala;
@@ -198,7 +202,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc content id ooyala.
 	 *
-	 * @param fcContentIdOoyala the new fc content id ooyala
+	 * @param fcContentIdOoyala
+	 *            the new fc content id ooyala
 	 */
 	public void setFcContentIdOoyala(String fcContentIdOoyala) {
 		this.fcContentIdOoyala = fcContentIdOoyala;
@@ -216,7 +221,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc descripcion.
 	 *
-	 * @param fcDescripcion the new fc descripcion
+	 * @param fcDescripcion
+	 *            the new fc descripcion
 	 */
 	public void setFcDescripcion(String fcDescripcion) {
 		this.fcDescripcion = fcDescripcion;
@@ -234,7 +240,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc duration ooyala.
 	 *
-	 * @param fcDurationOoyala the new fc duration ooyala
+	 * @param fcDurationOoyala
+	 *            the new fc duration ooyala
 	 */
 	public void setFcDurationOoyala(String fcDurationOoyala) {
 		this.fcDurationOoyala = fcDurationOoyala;
@@ -252,7 +259,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc escribio.
 	 *
-	 * @param fcEscribio the new fc escribio
+	 * @param fcEscribio
+	 *            the new fc escribio
 	 */
 	public void setFcEscribio(String fcEscribio) {
 		this.fcEscribio = fcEscribio;
@@ -270,7 +278,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc file size ooyala.
 	 *
-	 * @param fcFileSizeOoyala the new fc file size ooyala
+	 * @param fcFileSizeOoyala
+	 *            the new fc file size ooyala
 	 */
 	public void setFcFileSizeOoyala(String fcFileSizeOoyala) {
 		this.fcFileSizeOoyala = fcFileSizeOoyala;
@@ -288,7 +297,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc friendly url.
 	 *
-	 * @param fcFriendlyUrl the new fc friendly url
+	 * @param fcFriendlyUrl
+	 *            the new fc friendly url
 	 */
 	public void setFcFriendlyUrl(String fcFriendlyUrl) {
 		this.fcFriendlyUrl = fcFriendlyUrl;
@@ -306,7 +316,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc fuente.
 	 *
-	 * @param fcFuente the new fc fuente
+	 * @param fcFuente
+	 *            the new fc fuente
 	 */
 	public void setFcFuente(String fcFuente) {
 		this.fcFuente = fcFuente;
@@ -324,7 +335,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc id categoria.
 	 *
-	 * @param fcIdCategoria the new fc id categoria
+	 * @param fcIdCategoria
+	 *            the new fc id categoria
 	 */
 	public void setFcIdCategoria(String fcIdCategoria) {
 		this.fcIdCategoria = fcIdCategoria;
@@ -342,7 +354,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc id estatus.
 	 *
-	 * @param fcIdEstatus the new fc id estatus
+	 * @param fcIdEstatus
+	 *            the new fc id estatus
 	 */
 	public void setFcIdEstatus(String fcIdEstatus) {
 		this.fcIdEstatus = fcIdEstatus;
@@ -360,7 +373,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc id pcode.
 	 *
-	 * @param fcIdPcode the new fc id pcode
+	 * @param fcIdPcode
+	 *            the new fc id pcode
 	 */
 	public void setFcIdPcode(String fcIdPcode) {
 		this.fcIdPcode = fcIdPcode;
@@ -378,7 +392,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc id tipo nota.
 	 *
-	 * @param fcIdTipoNota the new fc id tipo nota
+	 * @param fcIdTipoNota
+	 *            the new fc id tipo nota
 	 */
 	public void setFcIdTipoNota(String fcIdTipoNota) {
 		this.fcIdTipoNota = fcIdTipoNota;
@@ -396,7 +411,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc id usuario.
 	 *
-	 * @param fcIdUsuario the new fc id usuario
+	 * @param fcIdUsuario
+	 *            the new fc id usuario
 	 */
 	public void setFcIdUsuario(String fcIdUsuario) {
 		this.fcIdUsuario = fcIdUsuario;
@@ -414,7 +430,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc imagen.
 	 *
-	 * @param fcImagen the new fc imagen
+	 * @param fcImagen
+	 *            the new fc imagen
 	 */
 	public void setFcImagen(String fcImagen) {
 		this.fcImagen = fcImagen;
@@ -432,7 +449,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc keywords.
 	 *
-	 * @param fcKeywords the new fc keywords
+	 * @param fcKeywords
+	 *            the new fc keywords
 	 */
 	public void setFcKeywords(String fcKeywords) {
 		this.fcKeywords = fcKeywords;
@@ -450,7 +468,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc lugar.
 	 *
-	 * @param fcLugar the new fc lugar
+	 * @param fcLugar
+	 *            the new fc lugar
 	 */
 	public void setFcLugar(String fcLugar) {
 		this.fcLugar = fcLugar;
@@ -468,7 +487,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc player id ooyala.
 	 *
-	 * @param fcPlayerIdOoyala the new fc player id ooyala
+	 * @param fcPlayerIdOoyala
+	 *            the new fc player id ooyala
 	 */
 	public void setFcPlayerIdOoyala(String fcPlayerIdOoyala) {
 		this.fcPlayerIdOoyala = fcPlayerIdOoyala;
@@ -486,7 +506,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc source ooyala.
 	 *
-	 * @param fcSourceOoyala the new fc source ooyala
+	 * @param fcSourceOoyala
+	 *            the new fc source ooyala
 	 */
 	public void setFcSourceOoyala(String fcSourceOoyala) {
 		this.fcSourceOoyala = fcSourceOoyala;
@@ -504,7 +525,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc titulo.
 	 *
-	 * @param fcTitulo the new fc titulo
+	 * @param fcTitulo
+	 *            the new fc titulo
 	 */
 	public void setFcTitulo(String fcTitulo) {
 		this.fcTitulo = fcTitulo;
@@ -522,15 +544,13 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fc video youtube.
 	 *
-	 * @param fcVideoYoutube the new fc video youtube
+	 * @param fcVideoYoutube
+	 *            the new fc video youtube
 	 */
 	public void setFcVideoYoutube(String fcVideoYoutube) {
 		this.fcVideoYoutube = fcVideoYoutube;
 	}
 
-
-	
-	
 	/**
 	 * Gets the fd fecha modificacion.
 	 *
@@ -543,7 +563,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fd fecha modificacion.
 	 *
-	 * @param fdFechaModificacion the new fd fecha modificacion
+	 * @param fdFechaModificacion
+	 *            the new fd fecha modificacion
 	 */
 	public void setFdFechaModificacion(String fdFechaModificacion) {
 		this.fdFechaModificacion = fdFechaModificacion;
@@ -561,7 +582,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fd fecha publicacion.
 	 *
-	 * @param fdFechaPublicacion the new fd fecha publicacion
+	 * @param fdFechaPublicacion
+	 *            the new fd fecha publicacion
 	 */
 	public void setFdFechaPublicacion(String fdFechaPublicacion) {
 		this.fdFechaPublicacion = fdFechaPublicacion;
@@ -579,7 +601,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fi ban infinito home.
 	 *
-	 * @param fiBanInfinitoHome the new fi ban infinito home
+	 * @param fiBanInfinitoHome
+	 *            the new fi ban infinito home
 	 */
 	public void setFiBanInfinitoHome(int fiBanInfinitoHome) {
 		this.fiBanInfinitoHome = fiBanInfinitoHome;
@@ -597,7 +620,8 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fi ban msn.
 	 *
-	 * @param fiBanMsn the new fi ban msn
+	 * @param fiBanMsn
+	 *            the new fi ban msn
 	 */
 	public void setFiBanMsn(int fiBanMsn) {
 		this.fiBanMsn = fiBanMsn;
@@ -615,10 +639,29 @@ public class NNota implements Serializable {
 	/**
 	 * Sets the fi ban otros.
 	 *
-	 * @param fiBanOtros the new fi ban otros
+	 * @param fiBanOtros
+	 *            the new fi ban otros
 	 */
 	public void setFiBanOtros(int fiBanOtros) {
 		this.fiBanOtros = fiBanOtros;
 	}
 
+	public String getFcIdSeccion() {
+		return fcIdSeccion;
+	}
+
+	public void setFcIdSeccion(String fcIdSeccion) {
+		this.fcIdSeccion = fcIdSeccion;
+	}
+
+	public String getFcPCode() {
+		return FcPCode;
+	}
+
+	public void setFcPCode(String fcPCode) {
+		FcPCode = fcPCode;
+	}
+
+	
+	
 }

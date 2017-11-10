@@ -44,21 +44,33 @@ public class DetailController {
 	 */
 	@RequestMapping(value = "/save_item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
-	public int insertNota(@RequestBody NNota nota) throws ControllerException {
+	public int saveItem(@RequestBody NNota nota) throws ControllerException {
 		logger.info("--- ItemsController-----");
-		logger.info("--- save_item -----");
+		logger.info("--- saveItem -----");
 
 		int res = 0;
 		try {
 
-			res = detailBO.insertNota(nota);
+			res = detailBO.saveItem(nota);
 
 		} catch (Exception e) {
-			logger.error(" -- Error  save_item [ItemsController]:", e);
+			logger.error(" -- Error  saveNota [ItemsController]:", e);
 			throw new ControllerException(e.getMessage());
 		}
 
 		return res;
+	}
+	
+	
+	@RequestMapping(value = "/item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
+	@ResponseBody
+	public NNota item() throws ControllerException {
+		logger.info("--- ItemsController-----");
+		logger.info("--- item -----");
+
+		
+
+		return new NNota();
 	}
 
 	/**

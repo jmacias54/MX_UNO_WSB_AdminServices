@@ -92,6 +92,35 @@ public class DetailCallWS {
 		return res;
 
 	}
+	
+	public int updateNota(NNota nota) throws DetailCallWSException {
+
+		int res = 0;
+		String metodo = "/update_item";
+		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
+
+		logger.info("--- updateNota --- [ DetailCallWS ] --- ");
+		logger.info("--- URL : " + URL_WS);
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			res = restTemplate.postForObject(URL_WS, nota, Integer.class);
+
+			logger.info(" Registros obtenidos --> " + res);
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException updateNota [ DetailCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException updateNota[ DetailCallWS ]: ", rre);
+			throw new DetailCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception updateNota  [ DetailCallWS ]: ", e);
+			throw new DetailCallWSException(e.getMessage());
+		}
+
+		return res;
+
+	}
 
 	public HNota findNotaById(String idContenido) throws DetailCallWSException {
 
