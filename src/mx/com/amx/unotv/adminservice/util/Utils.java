@@ -24,7 +24,6 @@ import mx.com.amx.unotv.adminservice.dto.RedSocialEmbedPostDTO;
 import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
 
-
 /**
  * @author Jesus A. Macias Benitez
  *
@@ -41,7 +40,7 @@ public class Utils {
 		try {
 
 			rutaContenido =  nota.getFcIdSeccion() + "/" + nota.getFcIdCategoria()
-					+ "/detalle/" + nota.getFcFriendlyUrl() + "/";
+					+ "/detalle/" + nota.getFcFriendlyUrl() ;
 
 			LOG.debug("rutaContenido: " + rutaContenido);
 		} catch (Exception e) {
@@ -903,5 +902,8 @@ public class Utils {
 
 		return HTML;
 	}
+	
+	
+	
 
 }

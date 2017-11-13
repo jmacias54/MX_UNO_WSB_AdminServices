@@ -31,6 +31,9 @@
 	<bean id="detailBO" class="mx.com.amx.unotv.adminservice.bo.DetailBO"></bean>
 	<bean id="magazineBO" class="mx.com.amx.unotv.adminservice.bo.MagazineBO"></bean>
 	<bean id="notaBO" class="mx.com.amx.unotv.adminservice.bo.NotaBO"></bean>
+	<bean id="jsonBO" class="mx.com.amx.unotv.adminservice.bo.JsonBO"></bean>
+	
+	
 	
 	
 

@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import mx.com.amx.unotv.adminservice.model.Categoria;
 import mx.com.amx.unotv.adminservice.model.Pcode;
+import mx.com.amx.unotv.adminservice.model.Seccion;
 import mx.com.amx.unotv.adminservice.model.response.CatalogResponse;
 import mx.com.amx.unotv.adminservice.model.response.CatalogWSResponse;
 import mx.com.amx.unotv.adminservice.model.response.CategoriaSeccionResponse;
@@ -122,7 +123,7 @@ public class CatalogsCallWS {
 			logger.info("URL_WS: " + URL_WS);
 
 			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
-			request = restTemplate.postForObject(URL_WS + "/"+idSeccion, entity, CategoriaSeccionWSResponse.class);
+			request = restTemplate.postForObject(URL_WS+"/"+idSeccion, entity, CategoriaSeccionWSResponse.class);
 
 			logger.info(" Registros obtenidos --> " + request.getLista().toString());
 			logger.info(" Total Registros obtenidos --> " + request.getLista().size());
@@ -140,6 +141,69 @@ public class CatalogsCallWS {
 
 		return request.getLista();
 	
+	}
+	
+	
+	public Categoria getCategorieById(String idCategoria) throws CatalogsCallWSException {
+
+		Categoria response = new Categoria();
+
+		String metodo = "/get_categorie";
+		String URL_WS = URL_WS_BASE + URL_WS_CATALOGS + metodo;
+
+		logger.info("--- getCategorieById --- [ CatalogsCallWS ] --- ");
+		
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			response = restTemplate.postForObject(URL_WS + "/"+idCategoria, entity, Categoria.class);
+
+			logger.info(" Registros obtenidos --> " + response.toString());
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException getCategorieById [ CatalogsCallWS ]: "
+					+ rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getCategorieById [ CatalogsCallWS ]: ", rre);
+			throw new CatalogsCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception getCategorieById  [ CatalogsCallWS ]: ", e);
+			throw new CatalogsCallWSException(e.getMessage());
+		}
+
+		return response;
+	}
+	
+	public Seccion getSeccionById(String idSeccion) throws CatalogsCallWSException {
+
+		Seccion response = new Seccion();
+
+		String metodo = "/get_section";
+		String URL_WS = URL_WS_BASE + URL_WS_CATALOGS + metodo;
+
+		logger.info("--- getSeccionById --- [ CatalogsCallWS ] --- ");
+		
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			response = restTemplate.postForObject(URL_WS +"/"+idSeccion, entity, Seccion.class);
+
+			logger.info(" Registros obtenidos --> " + response.toString());
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException getSeccionById [ CatalogsCallWS ]: "
+					+ rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getSeccionById [ CatalogsCallWS ]: ", rre);
+			throw new CatalogsCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception getSeccionById  [ CatalogsCallWS ]: ", e);
+			throw new CatalogsCallWSException(e.getMessage());
+		}
+
+		return response;
 	}
 
 	public List<Categoria> categoriesFindAll() throws CatalogsCallWSException {

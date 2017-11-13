@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import mx.com.amx.unotv.adminservice.bo.exception.DetailBOException;
+import mx.com.amx.unotv.adminservice.bo.exception.JsonBOException;
 import mx.com.amx.unotv.adminservice.model.HNota;
 import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
@@ -29,6 +30,8 @@ public class DetailBO {
 	DetailCallWS detailCallWS;
 	@Autowired
 	NotaBO notaBO;
+	@Autowired
+	JsonBO jsonBO;
 
 	public int saveItem(NNota nota) throws DetailBOException {
 		logger.debug("*** Inicia saveItem [ DetailBO ] ***");
@@ -71,6 +74,14 @@ public class DetailBO {
 
 				if(success)
 					Utils.createPlantilla(parametrosDTO, nota, carpetaContenido);
+				
+				//Generamos el json del detalle para la app.			
+				try {
+					jsonBO.generaDetalleJson(nota, parametrosDTO, carpetaContenido);				
+				} catch (JsonBOException je) {
+					logger.error("Exception  json: "+je.getMessage());
+					listError.add("generaDetalleJson: "+je.getMessage());
+				}
 
 			}
 
