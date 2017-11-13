@@ -36,6 +36,7 @@ public class DetailBO {
 		ParametrosDTO parametrosDTO = null;
 		PropertiesUtils properties = new PropertiesUtils();
 		List<String> listError = new ArrayList<String>();
+		boolean success= false;
 
 		String id_facebook = "";
 		String carpetaContenido = "";
@@ -57,23 +58,22 @@ public class DetailBO {
 
 			// Validamos si la nota contiene video de ooyala
 			logger.debug("**TIPO DE NOTA: " + nota.getFcIdTipoNota());
-			
-			//Guardamos o actualizamos la nota en la base de datos.
+
+			// Guardamos o actualizamos la nota en la base de datos.
 			res = notaBO.saveOrUpdate(nota);
-			//res = detailCallWS.insertNota(nota);
-			
-			
-			//Guardamos o actualizamos los Tags de la nota		
-			
-			
-			//Creamos estrcutura de directorios
-			Utils.createFolders(carpetaContenido);
-			
-			Utils.createPlantilla(parametrosDTO, nota, urlNota);
-			
-			
-			
-			
+			// res = detailCallWS.insertNota(nota);
+
+			if (res > 0) {
+				// Guardamos o actualizamos los Tags de la nota
+
+				// Creamos estrcutura de directorios
+				success = Utils.createFolders(carpetaContenido);
+
+				if(success)
+					Utils.createPlantilla(parametrosDTO, nota, urlNota);
+
+			}
+
 		} catch (Exception e) {
 			logger.error("Exception saveItem  [ DetailBO ]: ", e);
 			throw new DetailBOException(e.getMessage());

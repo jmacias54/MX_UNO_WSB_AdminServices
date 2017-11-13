@@ -139,7 +139,10 @@ public class DetailCallWS {
 
 			logger.info(" Registros obtenidos --> " + nota.toString());
 
-		} catch (RestClientResponseException rre) {
+		} catch (NullPointerException npe) {
+			
+			return null;
+		}catch (RestClientResponseException rre) {
 			logger.error("RestClientResponseException findNotaById [ DetailCallWS ]: " + rre.getResponseBodyAsString());
 			logger.error("RestClientResponseException findNotaById[ DetailCallWS ]: ", rre);
 			throw new DetailCallWSException(rre.getResponseBodyAsString());

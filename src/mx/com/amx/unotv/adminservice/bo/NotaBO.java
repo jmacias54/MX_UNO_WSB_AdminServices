@@ -9,8 +9,6 @@ import mx.com.amx.unotv.adminservice.bo.exception.NotaBOException;
 import mx.com.amx.unotv.adminservice.model.HNota;
 import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.ws.DetailCallWS;
-import mx.com.amx.unotv.adminservice.ws.ItemsCallWS;
-import mx.com.amx.unotv.adminservice.ws.exception.DetailCallWSException;
 
 /**
  * @author Jesus A. Macias Benitez
@@ -28,12 +26,14 @@ public class NotaBO {
 		try {
 			notaRes = detailCallWS.findNotaById(nota.getFcIdContenido());
 
-			if (notaRes != null) {
-
-				res = detailCallWS.updateNota(nota);
-			} else {
+			if (notaRes == null) {
 
 				res = detailCallWS.insertNota(nota);
+				
+			} else {
+
+				res = detailCallWS.updateNota(nota);
+				
 			}
 			
 			

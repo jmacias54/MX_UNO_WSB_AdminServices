@@ -95,8 +95,11 @@ public class Utils {
 				success = false;
 			}
 
+			LOG.debug("success  : "+success);
 			if (success) {
 
+				
+				LOG.debug("Plantilla  : "+doc.toString());
 				String HTML = doc.html();
 
 				// Creamos el HTML con base a la plantilla
