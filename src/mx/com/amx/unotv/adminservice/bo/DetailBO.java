@@ -70,7 +70,7 @@ public class DetailBO {
 				success = Utils.createFolders(carpetaContenido);
 
 				if(success)
-					Utils.createPlantilla(parametrosDTO, nota, urlNota);
+					Utils.createPlantilla(parametrosDTO, nota, carpetaContenido);
 
 			}
 

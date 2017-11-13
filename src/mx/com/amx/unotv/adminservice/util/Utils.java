@@ -52,12 +52,16 @@ public class Utils {
 	}
 
 	public static boolean createFolders(String carpetaContenido) throws Exception {
+		LOG.error(" --- Inicio createFolders ---- ");
+		LOG.error(" --- PATH  : "+carpetaContenido);
 		boolean success = false;
 		try {
 			File carpetas = new File(carpetaContenido);
 			if (!carpetas.exists()) {
+				LOG.error(" --- mkdir  : "+carpetaContenido);
 				success = carpetas.mkdirs();
 			} else
+				LOG.error(" --- Las carpetas  : "+carpetaContenido+" ya existen ---");
 				success = true;
 		} catch (Exception e) {
 			success = false;
@@ -87,19 +91,19 @@ public class Utils {
 				id_seccion = contentDTO.getFcIdSeccion();
 
 				// Nos conectamos a la plantilla detalle-prerender de portal
-				LOG.info("Conectandose a : " + parametrosDTO.getTemplateHtml());
+				LOG.info("---- Conectandose a : " + parametrosDTO.getTemplateHtml());
 				doc = Jsoup.connect(parametrosDTO.getTemplateHtml()).timeout(120000).get();
-				success = true;
+				
 			} catch (Exception e) {
 				LOG.error("Ocurrio error al Obtener el HTML de : ", e);
-				success = false;
+			
 			}
 
-			LOG.debug("success  : "+success);
-			if (success) {
+			
+			if (doc != null) {
 
-				
-				LOG.debug("Plantilla  : "+doc.toString());
+				LOG.debug("--- Se Crea Plantilla --- ");
+			
 				String HTML = doc.html();
 
 				// Creamos el HTML con base a la plantilla
@@ -123,7 +127,7 @@ public class Utils {
 			FileWriter fichero = null;
 			PrintWriter pw = null;
 			try {
-				fichero = new FileWriter(rutaHMTL);
+				fichero = new FileWriter(rutaHMTL+"/index.html");
 				pw = new PrintWriter(fichero);
 				pw.println(HTML);
 				pw.close();
