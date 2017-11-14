@@ -4,19 +4,26 @@
  */
 package mx.com.amx.unotv.adminservice.bo;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import mx.com.amx.unotv.adminservice.bo.exception.DetailBOException;
 import mx.com.amx.unotv.adminservice.bo.exception.JsonBOException;
+import mx.com.amx.unotv.adminservice.dto.PushAmpDTO;
+import mx.com.amx.unotv.adminservice.model.Categoria;
 import mx.com.amx.unotv.adminservice.model.HNota;
 import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.util.PropertiesUtils;
 import mx.com.amx.unotv.adminservice.util.Utils;
+import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 import mx.com.amx.unotv.adminservice.ws.DetailCallWS;
+
 
 /**
  * @author Jesus A. Macias Benitez
@@ -32,6 +39,8 @@ public class DetailBO {
 	NotaBO notaBO;
 	@Autowired
 	JsonBO jsonBO;
+	@Autowired
+	CatalogsCallWS catalogsCallWS;
 
 	public int saveItem(NNota nota) throws DetailBOException {
 		logger.debug("*** Inicia saveItem [ DetailBO ] ***");
@@ -72,18 +81,58 @@ public class DetailBO {
 				// Creamos estrcutura de directorios
 				success = Utils.createFolders(carpetaContenido);
 
-				if(success)
-					Utils.createPlantilla(parametrosDTO, nota, carpetaContenido);
-				
-				//Generamos el json del detalle para la app.			
-				try {
-					jsonBO.generaDetalleJson(nota, parametrosDTO, carpetaContenido);				
-				} catch (JsonBOException je) {
-					logger.error("Exception  json: "+je.getMessage());
-					listError.add("generaDetalleJson: "+je.getMessage());
+				if (success)
+					success = Utils.createPlantilla(parametrosDTO, nota, carpetaContenido);
+				if (success) {
+					// Generamos el json del detalle para la app.
+					try {
+						jsonBO.generaDetalleJson(nota, parametrosDTO, carpetaContenido);
+					} catch (JsonBOException je) {
+						logger.error("Exception  json: " + je.getMessage());
+						listError.add("generaDetalleJson: " + je.getMessage());
+					}
+					
+					
+					Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
+					parametrosDTO.setNombreCategoria(categoria.getFcDescripcion());
+					
+					
+					try {				
+						String html_amp=Utils.createPlantillaAMP(parametrosDTO, nota);	
+						
+						
+						//Enviamos push de AMP
+						/*if(!html_amp.equals("")){ 
+							
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+						    Date parsedDate = dateFormat.parse(nota.getFdFechaPublicacion());
+						    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+						    
+						    
+							logger.info("Enviamos PUSH al AMP");
+							PushAmpDTO pushAMP=new PushAmpDTO();
+							pushAMP.setFcIdCategoria(nota.getFcIdCategoria());
+							pushAMP.setFcIdContenido(nota.getFcIdContenido());
+							pushAMP.setFcNombre(nota.getFcFriendlyUrl());
+							pushAMP.setFcSeccion(nota.getFcIdSeccion());
+							// pushAMP.setFcTipoSeccion(contentDTO.getFcTipoSeccion());
+							pushAMP.setFcTitulo(nota.getFcTitulo());
+							pushAMP.setFdFechaPublicacion(timestamp);
+							pushAMP.setHtmlAMP(html_amp);				
+							//RespuestaWSAmpDTO  respuestaWSAMP=llamadasWSBO.sendPushAMP(pushAMP, parametrosDTO);
+							//LOG.info("Respuesta AMP: "+respuestaWSAMP.getRespuesta());
+						}			*/
+						
+						
+					} catch (Exception ampe) {
+						logger.error("Exception  json: "+ampe.getMessage());
+						throw new DetailBOException(ampe.getMessage());
+					}
+
 				}
 
 			}
+			
 
 		} catch (Exception e) {
 			logger.error("Exception saveItem  [ DetailBO ]: ", e);

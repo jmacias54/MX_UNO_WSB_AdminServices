@@ -16,19 +16,25 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import mx.com.amx.unotv.adminservice.dto.RedSocialEmbedPostDTO;
 import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
+import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 
 /**
  * @author Jesus A. Macias Benitez
  *
  */
 public class Utils {
+	
+	@Autowired
+	CatalogsCallWS catalogsCallWS;
 
 	// LOG
 	private static Logger LOG = Logger.getLogger(Utils.class);
@@ -110,7 +116,7 @@ public class Utils {
 
 				String rutaHTML = urlNota;
 				LOG.info("Ruta HTML: " + rutaHTML);
-				success = writeHTML(rutaHTML, HTML);
+				success = writeHTML(rutaHTML+"/index.html", HTML);
 				LOG.info("Genero HTML Local: " + success);
 			}
 		} catch (Exception e) {
@@ -126,7 +132,7 @@ public class Utils {
 			FileWriter fichero = null;
 			PrintWriter pw = null;
 			try {
-				fichero = new FileWriter(rutaHMTL+"/index.html");
+				fichero = new FileWriter(rutaHMTL);
 				pw = new PrintWriter(fichero);
 				pw.println(HTML);
 				pw.close();
@@ -215,7 +221,7 @@ public class Utils {
 		// $WCM_FECHA$
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			HTML = HTML.replace("$WCM_FECHA$", format.format(contentDTO.getFdFechaPublicacion()));
+			HTML = HTML.replace("$WCM_FECHA$", format.format(new Date()));
 		} catch (Exception e) {
 			HTML = HTML.replace("$WCM_FECHA$", "");
 			LOG.error("Error al remplazar $WCM_FECHA$");
@@ -904,6 +910,396 @@ public class Utils {
 	}
 	
 	
+	public static String createPlantillaAMP(ParametrosDTO parametrosDTO, NNota nota) 
+	{
+		LOG.debug("*** Inicia createPlantillaAMP");
+		
+		boolean success = false;
+		String HTML="";
+		try {
+				
+				ReadHTMLWebServer readHTMLWebServer=new ReadHTMLWebServer();
+				LOG.info("Plantilla AMP: "+parametrosDTO.getURL_WEBSERVER_AMP());
+				HTML = readHTMLWebServer.getResourceWebServer(parametrosDTO.getURL_WEBSERVER_AMP());
+				HTML = reemplazaPlantillaAMP(HTML, nota, parametrosDTO);
+				String rutaHTML = getRutaContenido(nota, parametrosDTO)+"/amp.html";
+				LOG.info("Ruta HTML AMP: "+parametrosDTO.getPathFiles()+rutaHTML);
+				success = writeHTML(parametrosDTO.getPathFiles()+rutaHTML, HTML);
+				LOG.info("Genero HTML Local AMP: "+success);
+		} catch(Exception e) {
+			LOG.error("Error al obtener HTML de Plantilla: ", e);
+			return "";
+		}
+		return HTML;
+	}
 	
+	
+	private static String reemplazaPlantillaAMP(String HTML, NNota nota, ParametrosDTO parametrosDTO){
+		
+		
+		
+		/* try {
+			LlamadasWSDAO llamadasWSDAO=new LlamadasWSDAO();
+			List<ContentDTO> listRelacionadas=llamadasWSDAO.getNotasMagazine("magazine-home-2",contentDTO.getFcIdContenido(), parametrosDTO);
+			StringBuffer relacionadas=new StringBuffer();
+			if(listRelacionadas!=null && listRelacionadas.size()>0){
+				for (ContentDTO relacionada : listRelacionadas) {
+					relacionadas.append("<a class=\"card\" href=\""+relacionada.getFcUrl()+"\">\n");
+					relacionadas.append("	<amp-img width=\"100\" height=\"70\" src=\""+relacionada.getFcImgPrincipal()+"\"></amp-img>\n");
+					relacionadas.append("	<div>\n");
+					relacionadas.append("	<span>"+StringEscapeUtils.escapeHtml(relacionada.getFcTitulo())+"</span>\n");
+					relacionadas.append("	<small>"+relacionada.getFcIdCategoria()+"</small>\n");
+					relacionadas.append("	</div>\n");
+					relacionadas.append("</a>\n");
+				}
+				HTML = HTML.replace("$WCM_LIST_RELACIONADAS$",relacionadas.toString().trim());
+			}
+		} catch (Exception e) {
+			LOG.error("Error al sustituir relacionadas");
+			HTML = HTML.replace("$WCM_LIST_RELACIONADAS$","");
+		}*/
+		
+		try {		
+			HTML = HTML.replace("$WCM_NAVEGACION_COMSCORE$",  nota.getFcIdSeccion()+"."+ nota.getFcIdCategoria()+ ".detalle." + nota.getFcFriendlyUrl());
+		} catch (Exception e) {
+			LOG.error("Error al sustituir navegacion  comscore");
+		}
+		
+		try {
+			ReadHTMLWebServer readHTMLWebServer=new ReadHTMLWebServer();
+			HTML = HTML.replace("$WCM_STYLES$",readHTMLWebServer.getResourceWebServer(parametrosDTO.getURL_WEBSERVER_CSS_AMP()).trim());
+		} catch(Exception e) {
+			HTML = HTML.replace("$WCM_STYLES$", "");
+			LOG.error("Error al remplazar $WCM_STYLES$");
+		}
+		
+		try {
+			HTML = HTML.replace("$WCM_TITLE_CONTENIDO$",StringEscapeUtils.escapeHtml(nota.getFcTitulo().trim()));
+		} catch(Exception e) {
+			HTML = HTML.replace("$WCM_TITLE_CONTENIDO$", "");
+			LOG.error("Error al remplazar $WCM_TITLE_CONTENIDO$");
+		}
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			HTML = HTML.replace("$WCM_FECHA$", format.format(nota.getFdFechaPublicacion()));
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_FECHA$", "");
+			LOG.error("Error al remplazar $WCM_FECHA$");
+		}
+		try {
+
+			Date time = new Date();
+			int hours = time.getHours();
+			int minutes = time.getMinutes();
+		
+			
+			HTML = HTML.replace("$WCM_HORA$", hours +":"+minutes);
+		
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_HORA$", "");
+			LOG.error("Error al remplazar $WCM_HORA$");
+		}
+		try {
+			String autor = nota.getFcEscribio() == null? "": nota.getFcEscribio();
+			HTML = HTML.replace("$WCM_AUTOR$", StringEscapeUtils.escapeHtml(autor).trim());
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_AUTOR$", "");
+			LOG.error("Error al remplazar $WCM_AUTOR$");
+		}
+		try {
+			String lugar = nota.getFcLugar() == null? "": nota.getFcLugar();
+			HTML = HTML.replace("$WCM_LUGAR$", StringEscapeUtils.escapeHtml(lugar));
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_LUGAR$", "");
+			LOG.error("Error al remplazar $WCM_LUGAR$");
+		}
+		try {
+			String nombreCategoria = parametrosDTO.getNombreCategoria() == null? "": parametrosDTO.getNombreCategoria() ;
+			HTML = HTML.replace("$WCM_CATEGORIA$", StringEscapeUtils.escapeHtml(nombreCategoria));
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_CATEGORIA$", "");
+			LOG.error("Error al remplazar $WCM_CATEGORIA$");
+		}
+		try {
+			String fuente = nota.getFcFuente() == null? "": nota.getFcFuente();
+			HTML = HTML.replace("$WCM_FUENTE$", StringEscapeUtils.escapeHtml(fuente));
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_FUENTE$", "");
+			LOG.error("Error al remplazar $WCM_FUENTE$");
+		}
+				
+		
+		try {
+			boolean tieneGaleria=nota.getClGaleria() != null && !nota.getClGaleria().equals("")?true:false;
+			boolean tieneVideo=nota.getFcContentIdOoyala() != null && !nota.getFcContentIdOoyala().equals("")?true:false;
+			
+				
+			if(tieneGaleria && tieneVideo){
+				LOG.info("Tipo de Nota multimedia, se reemplaza tanto la galeria, como el video");
+				HTML = HTML.replace("$WCM_MEDIA_CONTENT$", getMediaContentAMP(nota));
+				/*if(contentDTO.getPlaceGallery().equalsIgnoreCase("arriba")){
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_UP$", getGaleriaAMP(nota));
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_DOWN$","");
+				}else{
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_UP$","");
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_DOWN$", getGaleriaAMP(nota));
+				}*/
+				
+				HTML = HTML.replace("$WCM_TIENE_GALERIA_UP$","");
+				HTML = HTML.replace("$WCM_TIENE_GALERIA_DOWN$", getGaleriaAMP(nota));
+			}else if (tieneGaleria) {
+				LOG.info("Tipo de Nota Galeria, se reemplaza solo la galeria");
+				HTML = HTML.replace("$WCM_MEDIA_CONTENT$", "");
+				/*if(contentDTO.getPlaceGallery().equalsIgnoreCase("arriba")){
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_UP$", getGaleriaAMP(nota));
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_DOWN$","");
+				}else{
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_UP$","");
+					HTML = HTML.replace("$WCM_TIENE_GALERIA_DOWN$", getGaleriaAMP(nota));
+				}*/
+				HTML = HTML.replace("$WCM_TIENE_GALERIA_UP$","");
+				HTML = HTML.replace("$WCM_TIENE_GALERIA_DOWN$", getGaleriaAMP(nota));
+			}else{
+				LOG.info("Tipo de Nota video o default, se reemplaza solo el media Content");
+				HTML = HTML.replace("$WCM_MEDIA_CONTENT$", getMediaContentAMP(nota));
+				HTML = HTML.replace("$WCM_TIENE_GALERIA_DOWN$", "");
+				HTML = HTML.replace("$WCM_TIENE_GALERIA_UP$", "");
+			}
+		} catch(Exception e) {
+			HTML = HTML.replace("$WCM_MEDIA_CONTENT$", "");
+			HTML = HTML.replace("$WCM_TIENE_GALERIA$", "");
+			LOG.error("Error al remplazar $WCM_MEDIA_CONTENT$ y $WCM_TIENE_GALERIA$");
+		}
+		
+		
+		try {
+			HTML = HTML.replace("$WCM_RTF_CONTENIDO$", cambiaCaracteres(getEmbedPostAMP(nota.getClRtfContenido())));
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_RTF_CONTENIDO$", "");
+			LOG.error("Error al remplazar $WCM_RTF_CONTENIDO$");
+		}	
+		
+		try {			
+			HTML = HTML.replace("$URL_WHATSAPP$", "https://www.unotv.com/" + nota.getFcIdSeccion()+"/"+ nota.getFcIdCategoria()+"/detalle/" +nota.getFcFriendlyUrl()+"/");
+		} catch (Exception e) {
+			HTML = HTML.replace("$URL_WHATSAPP$", "");
+			LOG.error("Error al remplazar $URL_WHATSAPP$");
+		}
+		
+		try {			
+			HTML = HTML.replace("$URL_PAGE$", "https://www.unotv.com/"+ nota.getFcIdSeccion()+"/"+ nota.getFcIdCategoria()+"/detalle/" +nota.getFcFriendlyUrl()+"/");
+		} catch (Exception e) {
+			HTML = HTML.replace("$WCM_URL_PAGE$", "");
+			LOG.error("Error al remplazar $WCM_URL_PAGE$");
+		}
+		
+		return HTML;
+	}
+	
+	
+	private static String getEmbedPostAMP(String RTFContenido){
+		try {
+			String rtfContenido=RTFContenido;
+			String url, cadenaAReemplazar;
+			StringBuffer embedCode;
+			HashMap<String,ArrayList<RedSocialEmbedPostDTO>> MapAReemplazar = new HashMap<String,ArrayList<RedSocialEmbedPostDTO>>();
+			int num_post_embebidos;
+			int contador;
+			if(rtfContenido.contains("[instagram")){
+				//LOG.info("Embed Code instagram");
+				ArrayList<RedSocialEmbedPostDTO> listRedSocialEmbedInstagram=new ArrayList<RedSocialEmbedPostDTO>();
+				num_post_embebidos=rtfContenido.split("\\[instagram=").length-1;
+				contador=1;
+				do{
+					RedSocialEmbedPostDTO embebedPost=new RedSocialEmbedPostDTO();
+					String cadenas=devuelveCadenasPost("instagram", rtfContenido);
+					cadenaAReemplazar=cadenas.split("\\|")[0];
+					url=cadenas.split("\\|")[1];
+					rtfContenido=rtfContenido.replace(cadenaAReemplazar, "");
+					embedCode=new StringBuffer();
+					embedCode.append("<amp-instagram data-shortcode=\""+StringUtils.substringBetween(url, "https://www.instagram.com/p/", "/")+"\" width=\"300\" height=\"300\" layout=\"responsive\"></amp-instagram>\n");
+					
+					embebedPost.setCadena_que_sera_reemplazada(cadenaAReemplazar);
+					embebedPost.setRed_social("instagram");
+					embebedPost.setCodigo_embebido(embedCode.toString());
+					
+					listRedSocialEmbedInstagram.add(embebedPost);
+					contador ++;
+				}while(contador <= num_post_embebidos);
+				
+				MapAReemplazar.put("instagram", listRedSocialEmbedInstagram);
+			}
+			if(rtfContenido.contains("[twitter")){
+				//LOG.info("Embed Code twitter");
+				ArrayList<RedSocialEmbedPostDTO> listRedSocialEmbedTwitter=new ArrayList<RedSocialEmbedPostDTO>();
+				num_post_embebidos=rtfContenido.split("\\[twitter=").length-1;
+				contador=1;
+				do{
+					RedSocialEmbedPostDTO embebedPost=new RedSocialEmbedPostDTO();
+					String cadenas=devuelveCadenasPost("twitter", rtfContenido);
+					cadenaAReemplazar=cadenas.split("\\|")[0];
+					url=cadenas.split("\\|")[1];
+					rtfContenido=rtfContenido.replace(cadenaAReemplazar, "");
+					embedCode=new StringBuffer();
+							
+					embedCode.append(" <amp-twitter class=\"twitter\" width=\"400\" height=\"300\" layout=\"responsive\" data-tweetid=\""+url.split("/status/")[1]+"\" data-cards=\"hidden\"></amp-twitter> \n");
+					
+					embebedPost.setCadena_que_sera_reemplazada(cadenaAReemplazar);
+					embebedPost.setRed_social("twitter");
+					embebedPost.setCodigo_embebido(embedCode.toString());
+					
+					listRedSocialEmbedTwitter.add(embebedPost);
+					contador ++;
+				}while(contador <= num_post_embebidos);
+				
+				MapAReemplazar.put("twitter", listRedSocialEmbedTwitter);
+			
+			}
+			if(rtfContenido.contains("[facebook")){
+				//LOG.info("Embed Code facebook");
+				ArrayList<RedSocialEmbedPostDTO> listRedSocialEmbedFacebook=new ArrayList<RedSocialEmbedPostDTO>();
+				num_post_embebidos=rtfContenido.split("\\[facebook=").length-1;
+				contador=1;
+				do{
+					RedSocialEmbedPostDTO embebedPost=new RedSocialEmbedPostDTO();
+					String cadenas=devuelveCadenasPost("facebook", rtfContenido);
+					cadenaAReemplazar=cadenas.split("\\|")[0];
+					url=cadenas.split("\\|")[1];
+					rtfContenido=rtfContenido.replace(cadenaAReemplazar, "");
+					embedCode=new StringBuffer();
+					embedCode=new StringBuffer();
+					if(url.contains("/videos/")){
+						embedCode.append(" <amp-facebook width=\"300\" height=\"175\" layout=\"responsive\" data-embed-as=\"video\" data-href=\""+url+"\"></amp-facebook> \n");
+					}else{
+						embedCode.append(" <amp-facebook width=\"600\" height=\"300\" layout=\"responsive\" data-href=\""+url+"\"></amp-facebook>  \n");
+					}
+					
+					embebedPost.setCadena_que_sera_reemplazada(cadenaAReemplazar);
+					embebedPost.setRed_social("facebook");
+					embebedPost.setCodigo_embebido(embedCode.toString());
+					
+					listRedSocialEmbedFacebook.add(embebedPost);
+					contador++;;
+				}while(contador <= num_post_embebidos);
+				
+				MapAReemplazar.put("facebook", listRedSocialEmbedFacebook);
+			}
+			if(rtfContenido.contains("[giphy")){
+				//LOG.info("Embed Code giphy");
+				ArrayList<RedSocialEmbedPostDTO> listRedSocialEmbedGiphy=new ArrayList<RedSocialEmbedPostDTO>();
+				num_post_embebidos=rtfContenido.split("\\[giphy=").length-1;
+				contador=1;
+				do{
+					RedSocialEmbedPostDTO embebedPost=new RedSocialEmbedPostDTO();
+					String cadenas=devuelveCadenasPost("giphy", rtfContenido);
+					//cadenas giphy: [giphy=http://giphy.com/gifs/sassy-batman-ZuM7gif8TCvqU,http://i.giphy.com/rgg2PJ6VJTyPC.gif=giphy]|http://giphy.com/gifs/sassy-batman-ZuM7gif8TCvqU,http://i.giphy.com/rgg2PJ6VJTyPC.gif
+					//cadenas giphy: [giphy=http://giphy.com/gifs/superman-funny-wdh1SvEn0E06I,http://i.giphy.com/wdh1SvEn0E06I.gif=giphy]|http://giphy.com/gifs/superman-funny-wdh1SvEn0E06I,http://i.giphy.com/wdh1SvEn0E06I.gif
+
+					cadenaAReemplazar=cadenas.split("\\|")[0];
+					url=cadenas.split("\\|")[1];
+					rtfContenido=rtfContenido.replace(cadenaAReemplazar, "");
+					embedCode=new StringBuffer();
+					embedCode=new StringBuffer();
+					embedCode.append(" <amp-img class=\"giphy\" src=\""+url.split("\\,")[1]+"\" width=\"300\" height=\"125\" layout=\"responsive\"></amp-img> \n");
+					embedCode.append(" <span> V&iacute;a  \n");
+					embedCode.append(" 	<a href=\""+url.split("\\,")[0]+"\" target=\"_blank\">Giphy</a> \n");
+					embedCode.append("  </span> \n");
+					
+					embebedPost.setCadena_que_sera_reemplazada(cadenaAReemplazar);
+					embebedPost.setRed_social("giphy");
+					embebedPost.setCodigo_embebido(embedCode.toString());
+					
+					listRedSocialEmbedGiphy.add(embebedPost);
+					contador ++;
+				}while(contador <= num_post_embebidos);
+				
+				MapAReemplazar.put("giphy", listRedSocialEmbedGiphy);
+			}
+			
+			
+			if(!MapAReemplazar.isEmpty()){
+				Iterator<String> iterator_red_social = MapAReemplazar.keySet().iterator();
+				String red_social="", codigo_embebido="", cadena_que_sera_reemplazada="";
+				while(iterator_red_social.hasNext()){
+					red_social = iterator_red_social.next();
+			        if(red_social.equalsIgnoreCase("twitter") || red_social.equalsIgnoreCase("facebook") || red_social.equalsIgnoreCase("instagram") 
+			        		|| red_social.equalsIgnoreCase("giphy")){
+			        	ArrayList<RedSocialEmbedPostDTO> listEmbebidos=MapAReemplazar.get(red_social);
+			        	for (RedSocialEmbedPostDTO redSocialEmbedPost : listEmbebidos) {
+				        	cadena_que_sera_reemplazada=redSocialEmbedPost.getCadena_que_sera_reemplazada();
+				        	codigo_embebido=redSocialEmbedPost.getCodigo_embebido();
+				        	RTFContenido=RTFContenido.replace(cadena_que_sera_reemplazada, codigo_embebido);
+						}
+			        	
+			        }
+			    } 
+			}
+			try {
+				String listStyles[]=StringUtils.substringsBetween(RTFContenido,"style=\"","\"");
+				for (String style : listStyles) {
+					RTFContenido = RTFContenido.replace(style,"");
+				}
+				RTFContenido = RTFContenido.replace("style=\"\"","");
+				
+			} catch (Exception e) {
+				//RTFContenido = RTFContenido.replace("[widget-elecciones-eeuu]", "");
+				LOG.error("Error al sustituir styles");
+			}
+			
+			try {
+				StringBuffer widget=new StringBuffer();
+				widget.append("<amp-iframe class=\"video\" width=\"300px\" height=\"150px\" layout=\"responsive\" sandbox=\"allow-scripts allow-same-origin allow-popups allow-forms\" src=\"https://www.showt.com/widgets/US-Election?showtee_id=&amp;language_filter=ES&amp;theme=light&amp;event_id=&amp;partner_id=b982ecc6-af9d-4b94-a073-fc40d15ce9e0&amp;fullscreen_link=https%3A%2F%2Fwww.showt.com%2Fus-election%2FES&amp;widget_country=MX&amp;widget_lang=ES&amp;stream_id=&amp;window_type=showtbox&amp;intent=show-showtees\">\n");
+				widget.append("        <amp-img layout=\"fill\" src=\"/recursos_mobile_first/css/img/usa_flag.jpg\" placeholder></amp-img>\n");
+				widget.append("</amp-iframe>\n");
+				RTFContenido = RTFContenido.replace("[widget-elecciones-eeuu]", widget.toString());
+			} catch (Exception e) {
+				RTFContenido = RTFContenido.replace("[widget-elecciones-eeuu]", "");
+				LOG.error("Error al sustituir [widget-elecciones-eeuu]");
+			}
+			
+			try {
+				StringBuffer widget=new StringBuffer();
+				widget.append(" <amp-iframe class=\"video\" width=\"300px\" height=\"175px\" frameborder=\"0\" layout=\"responsive\" sandbox=\"allow-scripts allow-same-origin allow-popups allow-forms\" src=\"https://widgets.unotv.com/mapa-eleciones/\">\n");
+				widget.append(" <amp-img layout=\"fill\" src=\"/recursos_mobile_first/css/img/usa_flag.jpg\" placeholder></amp-img>\n");
+				widget.append(" </amp-iframe>\n");
+				
+				RTFContenido = RTFContenido.replace("[mapa-elecciones-eeuu]", widget.toString());
+			} catch (Exception e) {
+				RTFContenido = RTFContenido.replace("[mapa-elecciones-eeuu]", "");
+				LOG.error("Error al sustituir [mapa-elecciones-eeuu]");
+			}
+			return RTFContenido;
+		} catch (Exception e) {
+			LOG.error("Error getEmbedPost: ",e);
+			return RTFContenido;
+		}
+	}
+	
+	
+	private static String getGaleriaAMP(NNota nota) {
+		StringBuffer mediaImage = new StringBuffer("");
+		String galeria = nota.getClGaleria() == null?"":nota.getClGaleria() ;
+		if(!galeria.trim().equals("")){
+		String listSRC[]=StringUtils.substringsBetween(galeria,"src=\"", "\">");
+		String listDesc[]=StringUtils.substringsBetween(galeria,"<p>","<u>");
+		String listPie[]=StringUtils.substringsBetween(galeria,"<u>","</u>");
+			if(listSRC.length == listDesc.length && listSRC.length == listPie.length){
+				mediaImage.append("<div class=\"gallery\">");
+				for (int i = 0; i < listSRC.length; i++) {
+					mediaImage.append("<div class=\"item-gallery\">");
+					mediaImage.append("<amp-img width=\"545\" height=\"360\" layout=\"responsive\" src=\""+listSRC[i]+"\"></amp-img>");
+					mediaImage.append("<p>"+cambiaCaracteres(listDesc[i])+" ");
+					mediaImage.append("<u>"+cambiaCaracteres(listPie[i])+"</u>");
+					mediaImage.append("</p>");
+					mediaImage.append("</div>");
+				}
+				mediaImage.append("</div>");
+				
+			}
+		}
+		return mediaImage.toString();
+	}
+	
+
 
 }
