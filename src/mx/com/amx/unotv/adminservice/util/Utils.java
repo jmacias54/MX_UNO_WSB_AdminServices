@@ -922,7 +922,7 @@ public class Utils {
 				LOG.info("Plantilla AMP: "+parametrosDTO.getURL_WEBSERVER_AMP());
 				HTML = readHTMLWebServer.getResourceWebServer(parametrosDTO.getURL_WEBSERVER_AMP());
 				HTML = reemplazaPlantillaAMP(HTML, nota, parametrosDTO);
-				String rutaHTML = getRutaContenido(nota, parametrosDTO)+"amp.html";
+				String rutaHTML = getRutaContenido(nota, parametrosDTO)+"/amp.html";
 				LOG.info("Ruta HTML AMP: "+parametrosDTO.getPathFiles()+rutaHTML);
 				success = writeHTML(parametrosDTO.getPathFiles()+rutaHTML, HTML);
 				LOG.info("Genero HTML Local AMP: "+success);

@@ -40,7 +40,7 @@ public class ItemsResponse {
 	private String urlItem;
 	
 	/** The status. */
-	private int status;
+	private String status;
 
 	/**
 	 * Instantiates a new items response.
@@ -68,7 +68,7 @@ public class ItemsResponse {
 	 */
 	public ItemsResponse(String id, String title, String description, String date, String typeItem, String image,
 			String idSection, String idCategories, String descCategories, String descSection, String urlItem,
-			int status) {
+			String status) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -287,7 +287,7 @@ public class ItemsResponse {
 	 *
 	 * @return the status
 	 */
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
@@ -296,7 +296,7 @@ public class ItemsResponse {
 	 *
 	 * @param status the new status
 	 */
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

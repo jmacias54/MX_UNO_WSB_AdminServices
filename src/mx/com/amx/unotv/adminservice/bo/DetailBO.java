@@ -21,6 +21,8 @@ import mx.com.amx.unotv.adminservice.model.HNota;
 import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.model.Seccion;
+import mx.com.amx.unotv.adminservice.model.request.ImageRequest;
+import mx.com.amx.unotv.adminservice.model.response.ImageResponse;
 import mx.com.amx.unotv.adminservice.model.response.Item;
 import mx.com.amx.unotv.adminservice.util.MapItemUtil;
 import mx.com.amx.unotv.adminservice.util.PropertiesUtils;
@@ -28,6 +30,7 @@ import mx.com.amx.unotv.adminservice.util.Utils;
 import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 import mx.com.amx.unotv.adminservice.ws.DetailCallWS;
 import mx.com.amx.unotv.adminservice.ws.FacebookCallWS;
+import mx.com.amx.unotv.adminservice.ws.UploadImgCallWS;
 
 
 /**
@@ -48,6 +51,8 @@ public class DetailBO {
 	CatalogsCallWS catalogsCallWS;
 	@Autowired
 	FacebookCallWS facebookCallWS;
+	@Autowired
+	UploadImgCallWS uploadImgCallWS;
 
 	public int saveItem(Item item) throws DetailBOException {
 		logger.debug("*** Inicia saveItem [ DetailBO ] ***");
@@ -65,6 +70,7 @@ public class DetailBO {
 		
 		MapItemUtil mapItem = null;
 		NNota nota= null;
+		ImageRequest imgRequest = null;
 
 		// Obtenemos archivo de propiedades
 		try {
@@ -76,6 +82,11 @@ public class DetailBO {
 			 dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 			nota.setFdFechaPublicacion(dateFormat.format(new Date()));
 			nota.setFdFechaModificacion(dateFormat.format(new Date()));
+			
+			
+			// Crop Images Facebook , Miniatura 
+			
+			
 
 			// ruta con dominio wwww.unotv.com ó http://dev-unotv.tmx-internacional.net
 			logger.info("Frendy URL: " + nota.getFcFriendlyUrl());
@@ -187,13 +198,30 @@ public class DetailBO {
 					
 					
 					try {			
-						id_facebook = facebookCallWS.insertUpdateArticleFB(contentDTO, parametrosDTO);
+						 // id_facebook = facebookCallWS.insertUpdateArticleFB(contentDTO, parametrosDTO);
 						logger.debug("id_facebook: "+id_facebook);
 					} catch (Exception boe) {
 						logger.error("Exception  facebookCallWS  [ saveItem  ] : "+boe.getMessage());
 						throw new DetailBOException(boe.getMessage());
 					}	
 
+					imgRequest = new ImageRequest();
+					imgRequest.setType("FB");
+					imgRequest.setNameImage(item.getMain_image().getSrc());
+					imgRequest.setxPosition(item.getMain_image().getCordenadas_facebook().getX());
+					imgRequest.setyPosition(item.getMain_image().getCordenadas_facebook().getY());
+					
+					ImageResponse responseFB =uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
+					
+					logger.debug(" ImageResponse [ responseFB ]: "+responseFB.toString());
+					
+					imgRequest.setType("cuadrada");
+					imgRequest.setxPosition(item.getMain_image().getCordenadas_miniatura().getX());
+					imgRequest.setyPosition(item.getMain_image().getCordenadas_miniatura().getY());
+					
+					ImageResponse responseCuadrada = uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
+					
+					logger.debug(" ImageResponse [ responseCuadrada ]: "+responseCuadrada.toString());
 				}
 
 			}

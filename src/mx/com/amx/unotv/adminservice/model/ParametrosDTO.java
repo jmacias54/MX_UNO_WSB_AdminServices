@@ -6,6 +6,8 @@ public class ParametrosDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	
+	private String urlCropImage;
 	private String nombreCategoria;
 	private String templateHtml;
 	private String carpetaResources;
@@ -65,6 +67,23 @@ public class ParametrosDTO implements Serializable {
 	private String correo_error_asunto;
 	private String correo_error_cuerpo;
 	private String correo_error_smtpsender;
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public String getUrlCropImage() {
+		return urlCropImage;
+	}
+
+	public void setUrlCropImage(String urlCropImage) {
+		this.urlCropImage = urlCropImage;
+	}
 
 	public String getTemplateHtml() {
 		return templateHtml;

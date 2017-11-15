@@ -40,7 +40,8 @@ public class PropertiesUtils {
 			parametrosDTO.setPathFiles(propsServer.getProperty("pathFiles"));
 			
 			parametrosDTO.setTemplateHtml(propsServer.getProperty("templateHtml"));
-			
+			//urlCropImage
+			parametrosDTO.setUrlCropImage(propsServer.getProperty("url_crop_image"));
 			
 			
 			

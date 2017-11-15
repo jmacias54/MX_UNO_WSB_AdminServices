@@ -27,7 +27,17 @@ public class ItemsRequestByTitle {
  	/** The page. */
  	private int page;
 	 
+ 	private String author;
 	 
+	 
+	 
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
 	 
 	/**
 	 * Gets the type.

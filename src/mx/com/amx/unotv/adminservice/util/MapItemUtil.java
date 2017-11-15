@@ -49,6 +49,7 @@ public class MapItemUtil {
 		nota.setFdFechaModificacion((item.getDate()==  null ) ? "" :  item.getDate());
 		nota.setFdFechaPublicacion((item.getDate()==  null ) ? "" :item.getDate());
 		nota.setFcIdTipoNota((item.getType_nota()==  null ) ? "" :item.getType_nota());
+		nota.setFcFriendlyUrl((item.getFriendly_url()==  null ) ? "" :item.getFriendly_url());
 		
 		
 		nota.setFiBanInfinitoHome(0);
@@ -58,7 +59,7 @@ public class MapItemUtil {
 		
 		nota.setFcIdEstatus("PUB");
 		nota.setFcFileSizeOoyala("");
-		nota.setFcFriendlyUrl("");
+		
 		nota.setFcDurationOoyala("");
 		nota.setFcAlternativeTextOoyala("");
 		nota.setClGaleria("");
@@ -104,7 +105,7 @@ public class MapItemUtil {
 		item.setMain_video(mainVideo);
 		item.setCategory((nota.getFcIdCategoria()==  null ) ? "" :  nota.getFcIdCategoria() );
 		item.setType_nota((nota.getFcIdTipoNota()==  null ) ? "" :   nota.getFcIdTipoNota());
-		
+		item.setFriendly_url((nota.getFcFriendlyUrl()==  null ) ? "" :   nota.getFcFriendlyUrl());
 		
 		
 		return item ;
@@ -156,6 +157,7 @@ public class MapItemUtil {
 		item.setPath_nota("");
 		item.setSection("");
 		item.setTags("");
+		item.setFriendly_url((nota.getFcFriendlyUrl()==  null ) ? "" :   nota.getFcFriendlyUrl());
 		item.setType_nota((nota.getFcIdTipoNota()==  null ) ? "" :   nota.getFcIdTipoNota());
 		item.setTitle((nota.getFcTitulo()==  null ) ? "" :   nota.getFcTitulo());
 		

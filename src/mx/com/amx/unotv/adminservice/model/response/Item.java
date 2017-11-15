@@ -16,6 +16,7 @@ import mx.com.amx.unotv.adminservice.model.main_image;
 public class Item {
 
 	private String id;
+	private String friendly_url;
 	private String title;
 	private String date;
 	private String id_user;
@@ -39,6 +40,14 @@ public class Item {
 	public Item() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getFriendly_url() {
+		return friendly_url;
+	}
+
+	public void setFriendly_url(String friendly_url) {
+		this.friendly_url = friendly_url;
 	}
 
 	public String getId() {

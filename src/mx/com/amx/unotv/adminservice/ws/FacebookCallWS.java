@@ -70,7 +70,7 @@ public class FacebookCallWS {
 			try {
 				String URL_WS=parametrosDTO.getUrl_dominio_app()+parametrosDTO.getUrl_wsb_FB()+parametrosDTO.getMet_wsb_FB_insertUpdateArticle2();
 				LOG.debug("LLamado a "+URL_WS);
-				HttpEntity<ContentDTO> entity = new HttpEntity<ContentDTO>( contentDTO );
+				// HttpEntity<ContentDTO> entity = new HttpEntity<ContentDTO>( contentDTO );
 				return restTemplate.postForObject(URL_WS, contentDTO, String.class);
 			}catch(RestClientResponseException rre){
 				LOG.error("RestClientResponseException insertUpdateArticleFB [FacebookCallWS]: " + rre.getResponseBodyAsString());
