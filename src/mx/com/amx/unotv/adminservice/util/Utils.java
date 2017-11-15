@@ -474,7 +474,7 @@ public class Utils {
 					" <script src=\"//player.ooyala.com/static/v4/stable/4.13.5/ad-plugin/google_ima.min.js\"></script> \n");
 			mediaContent.append(" <script> \n");
 			mediaContent.append("   var playerParam = { \n");
-			mediaContent.append("     'pcode': '" + dto.getFcPCode() + "', \n");
+			mediaContent.append("     'pcode': '" + dto.getFcIdPcode() + "', \n");
 			mediaContent.append("     'playerBrandingId': \"" + IdPlayerVideoOoyala + "\", \n");
 			mediaContent.append("     'skin': { \n");
 			mediaContent.append("       'config': '/ooyala/4.13.5/skin.json' \n");
@@ -922,7 +922,7 @@ public class Utils {
 				LOG.info("Plantilla AMP: "+parametrosDTO.getURL_WEBSERVER_AMP());
 				HTML = readHTMLWebServer.getResourceWebServer(parametrosDTO.getURL_WEBSERVER_AMP());
 				HTML = reemplazaPlantillaAMP(HTML, nota, parametrosDTO);
-				String rutaHTML = getRutaContenido(nota, parametrosDTO)+"/amp.html";
+				String rutaHTML = getRutaContenido(nota, parametrosDTO)+"amp.html";
 				LOG.info("Ruta HTML AMP: "+parametrosDTO.getPathFiles()+rutaHTML);
 				success = writeHTML(parametrosDTO.getPathFiles()+rutaHTML, HTML);
 				LOG.info("Genero HTML Local AMP: "+success);

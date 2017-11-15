@@ -24,6 +24,11 @@
 	<bean id="itemsCallWS" class="mx.com.amx.unotv.adminservice.ws.ItemsCallWS"></bean>
 	<bean id="detailCallWS" class="mx.com.amx.unotv.adminservice.ws.DetailCallWS"></bean>
 	<bean id="magazineCallWS" class="mx.com.amx.unotv.adminservice.ws.MagazineCallWS"></bean>
+	<bean id="facebookCallWS" class="mx.com.amx.unotv.adminservice.ws.FacebookCallWS"></bean>
+	
+	
+	
+	
 	
 	<!-- Business Object -->
 	<bean id="catalogsBO" class="mx.com.amx.unotv.adminservice.bo.CatalogsBO"></bean>

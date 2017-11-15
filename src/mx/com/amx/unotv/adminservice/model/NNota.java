@@ -21,7 +21,7 @@ public class NNota implements Serializable {
 	/** The date format. */
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-	private String FcPCode;
+
 
 	private String fcIdSeccion;
 	/** The fc id contenido. */
@@ -654,13 +654,7 @@ public class NNota implements Serializable {
 		this.fcIdSeccion = fcIdSeccion;
 	}
 
-	public String getFcPCode() {
-		return FcPCode;
-	}
 
-	public void setFcPCode(String fcPCode) {
-		FcPCode = fcPCode;
-	}
 
 	
 	

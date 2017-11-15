@@ -15,6 +15,7 @@ import mx.com.amx.unotv.adminservice.bo.DetailBO;
 import mx.com.amx.unotv.adminservice.controller.exception.ControllerException;
 import mx.com.amx.unotv.adminservice.model.HNota;
 import mx.com.amx.unotv.adminservice.model.NNota;
+import mx.com.amx.unotv.adminservice.model.response.Item;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -38,20 +39,20 @@ public class DetailController {
 	/**
 	 * Inserta la nota en las tablas NNota y HNota
 	 *
-	 * @param NNota
+	 * @param Item
 	 * @return int
 	 * @throws ControllerException 
 	 */
 	@RequestMapping(value = "/save_item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
-	public int saveItem(@RequestBody NNota nota) throws ControllerException {
+	public int saveItem(@RequestBody Item item) throws ControllerException {
 		logger.info("--- ItemsController-----");
 		logger.info("--- saveItem -----");
 
 		int res = 0;
 		try {
 
-			res = detailBO.saveItem(nota);
+			res = detailBO.saveItem(item);
 
 		} catch (Exception e) {
 			logger.error(" -- Error  saveNota [ItemsController]:", e);
@@ -82,22 +83,21 @@ public class DetailController {
 	 */
 	@RequestMapping(value = "/get_item/{idContenido}", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
-	public HNota findNotaById(@PathVariable String idContenido) throws ControllerException {
+	public Item findNotaById(@PathVariable String idContenido) throws ControllerException {
 		logger.info("--- ItemsController-----");
 		logger.info("--- save_item -----");
 
-		HNota nota = null;
-		;
+		Item item = null;
 		try {
 
-			nota = detailBO.findNotaById(idContenido);
+			item = detailBO.findNotaById(idContenido);
 
 		} catch (Exception e) {
 			logger.error(" -- Error  getItem by IdContenido [ItemsController]:", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return nota;
+		return item;
 	}
 
 	/**

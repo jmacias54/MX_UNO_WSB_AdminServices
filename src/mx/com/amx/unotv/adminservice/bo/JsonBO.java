@@ -20,7 +20,6 @@ import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.model.Seccion;
 import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
-import mx.com.amx.unotv.adminservice.ws.DetailCallWS;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -62,7 +61,7 @@ public class JsonBO {
 			jsonNota.put("url_nota", nota.getFcFriendlyUrl()); // se arma con el dominio dev...
 			jsonNota.put("id_contenido", nota.getFcIdContenido());			
 			jsonNota.put("id_categoria", nota.getFcIdCategoria());
-			jsonNota.put("nombre", nota.getFcFriendlyUrl().trim().replaceAll("\n", "").replaceAll("\r", ""));			
+			jsonNota.put("nombre", nota.getFcFriendlyUrl().trim());			
 			jsonNota.put("titulo", nota.getFcTitulo().trim().replaceAll("\n", "").replaceAll("\r", ""));
 			jsonNota.put("descripcion", nota.getFcDescripcion().trim().replaceAll("/\r?\n/g", "").replaceAll("\n", "").replaceAll("\r", ""));
 			jsonNota.put("escribio", nota.getFcEscribio());
@@ -75,12 +74,12 @@ public class JsonBO {
 			jsonNota.put("video_youtube", nota.getFcVideoYoutube());
 			jsonNota.put("id_video_content", nota.getFcPlayerIdOoyala());
 			jsonNota.put("id_video_player", nota.getFcPlayerIdOoyala());
-			jsonNota.put("id_video_pcode", nota.getFcPCode());
+			jsonNota.put("id_video_pcode", nota.getFcIdPcode());
 			jsonNota.put("galeria", nota.getClGaleria());
 			
 			jsonNota.put("contenido_nota","<div class=\"content-article "+nota.getFcIdCategoria()+"\">"+ cambiaCaracteres(getContenidoRFC(nota.getClRtfContenido()))+"<div>");						
-			jsonNota.put("fecha_publicacion", getDateZoneTime(new Date(nota.getFdFechaPublicacion())));
-			jsonNota.put("fecha_modificacion", getDateZoneTime(new Date(nota.getFdFechaModificacion())));			
+			jsonNota.put("fecha_publicacion", nota.getFdFechaPublicacion());
+			jsonNota.put("fecha_modificacion", nota.getFdFechaModificacion());			
 			
 			jsonNota.put("adSetCode", "");
 			jsonNota.put("ruta_dfp", categoria.getFcRutaDfp());
@@ -108,19 +107,7 @@ public class JsonBO {
 	}
 	
 	
-	private static String getDateZoneTime(Date date){
-		String fecha="";
-		try {
-	        TimeZone tz = TimeZone.getTimeZone("CST");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-			df.setTimeZone(tz);			
-			fecha=df.format(date);
-		} catch (Exception e) {
-			LOG.error("Error getDateZoneTime: ",e);
-			return "";
-		}
-		return fecha;
-	}
+
 	
 	
 	/**
