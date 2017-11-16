@@ -26,6 +26,8 @@
 	<bean id="magazineCallWS" class="mx.com.amx.unotv.adminservice.ws.MagazineCallWS"></bean>
 	<bean id="facebookCallWS" class="mx.com.amx.unotv.adminservice.ws.FacebookCallWS"></bean>
 	<bean id="uploadImgCallWS" class="mx.com.amx.unotv.adminservice.ws.UploadImgCallWS"></bean>
+	<bean id="hNotaCallWS" class="mx.com.amx.unotv.adminservice.ws.HNotaCallWS"></bean>
+	<bean id="nNotaCallWS" class="mx.com.amx.unotv.adminservice.ws.NNotaCallWS"></bean>
 	
 	
 	

@@ -96,63 +96,9 @@ public class DetailCallWS {
 
 	}
 
-	public int insertNota(NNota nota) throws DetailCallWSException {
 
-		int res = 0;
-		String metodo = "/save_item";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
-
-		logger.info("--- insertNota --- [ DetailCallWS ] --- ");
-		logger.info("--- URL : " + URL_WS);
-
-		try {
-			
-
-			res = restTemplate.postForObject(URL_WS, nota, Integer.class);
-
-			logger.info(" Registros obtenidos --> " + res);
-
-		} catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException insertNota [ DetailCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException insertNota[ DetailCallWS ]: ", rre);
-			throw new DetailCallWSException(rre.getResponseBodyAsString());
-		} catch (Exception e) {
-			logger.error("Exception insertNota  [ DetailCallWS ]: ", e);
-			throw new DetailCallWSException(e.getMessage());
-		}
-
-		return res;
-
-	}
 	
-	public int updateNota(NNota nota) throws DetailCallWSException {
 
-		int res = 0;
-		String metodo = "/update_item";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
-
-		logger.info("--- updateNota --- [ DetailCallWS ] --- ");
-		logger.info("--- URL : " + URL_WS);
-
-		try {
-			logger.info("URL_WS: " + URL_WS);
-
-			res = restTemplate.postForObject(URL_WS, nota, Integer.class);
-
-			logger.info(" Registros obtenidos --> " + res);
-
-		} catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException updateNota [ DetailCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException updateNota[ DetailCallWS ]: ", rre);
-			throw new DetailCallWSException(rre.getResponseBodyAsString());
-		} catch (Exception e) {
-			logger.error("Exception updateNota  [ DetailCallWS ]: ", e);
-			throw new DetailCallWSException(e.getMessage());
-		}
-
-		return res;
-
-	}
 
 	public HNota findNotaById(String idContenido) throws DetailCallWSException {
 
@@ -168,6 +114,39 @@ public class DetailCallWS {
 			logger.info("URL_WS: " + URL_WS);
 			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
 			nota = restTemplate.postForObject(URL_WS + "/" + idContenido, entity, HNota.class);
+
+			logger.info(" Registros obtenidos --> " + nota.toString());
+
+		} catch (NullPointerException npe) {
+			
+			return null;
+		}catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException findNotaById [ DetailCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException findNotaById[ DetailCallWS ]: ", rre);
+			throw new DetailCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception findNotaById  [ DetailCallWS ]: ", e);
+			throw new DetailCallWSException(e.getMessage());
+		}
+
+		return nota;
+	}
+	
+	
+	public NNota findNNotaById(String idContenido) throws DetailCallWSException {
+
+		String metodo = "/get_n_nota";
+		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
+
+		logger.info("--- findNotaById --- [ DetailCallWS ] --- ");
+		logger.info("--- URL : " + URL_WS);
+
+		NNota nota = null;
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			nota = restTemplate.postForObject(URL_WS + "/" + idContenido, entity, NNota.class);
 
 			logger.info(" Registros obtenidos --> " + nota.toString());
 

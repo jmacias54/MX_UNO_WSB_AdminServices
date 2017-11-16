@@ -55,11 +55,31 @@ public class NNota implements Serializable {
 	private Integer fiBanMsn;
 	private Integer fiBanOtros;
 
+	private String fcCoordenadasFb;
+	private String fcCoordenadasMiniatura;
+
 	/**
 	 * Instantiates a new n nota.
 	 */
 	public NNota() {
 	}
+
+	public String getFcCoordenadasFb() {
+		return fcCoordenadasFb;
+	}
+
+	public void setFcCoordenadasFb(String fcCoordenadasFb) {
+		this.fcCoordenadasFb = fcCoordenadasFb;
+	}
+
+	public String getFcCoordenadasMiniatura() {
+		return fcCoordenadasMiniatura;
+	}
+
+	public void setFcCoordenadasMiniatura(String fcCoordenadasMiniatura) {
+		this.fcCoordenadasMiniatura = fcCoordenadasMiniatura;
+	}
+
 
 	public String getFdFechaModificacion() {
 		return fdFechaModificacion;

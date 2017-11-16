@@ -53,41 +53,6 @@ public class DetailBO {
 	UploadImgCallWS uploadImgCallWS;
 
 
-	public int expireItem(Item item) throws DetailBOException {
-		
-		int res = 0;
-		NNota nota= null;
-		MapItemUtil mapItem = null;
-		ParametrosDTO parametrosDTO = null;
-		PropertiesUtils properties = null;
-		
-		try {
-			
-			properties = new PropertiesUtils();
-			parametrosDTO = properties.obtenerPropiedades();
-			mapItem = new MapItemUtil();
-			nota = mapItem.MapItemToNota(item);
-			//Ruta para borrar html
-			String carpetaContenido=parametrosDTO.getPathFiles()+Utils.getRutaContenido(nota, parametrosDTO);			
-			logger.debug("carpetaContenido: "+carpetaContenido);			
-			//Borramos html
-			boolean delteHTML = Utils.deleteHTML(carpetaContenido);
-			logger.debug("Se borro direcorio: "+delteHTML);
-			
-			
-			if(delteHTML) {
-				res = detailCallWS.expireItem(nota);
-			}
-			
-		} catch (Exception e) {
-			logger.error("Exception expireItem  [ DetailBO ]: ", e);
-			throw new DetailBOException(e.getMessage());
-		}
-
-	
-		
-		return res;
-	}
 	
 	public int saveItem(Item item) throws DetailBOException {
 		logger.debug("*** Inicia saveItem [ DetailBO ] ***");
@@ -110,10 +75,10 @@ public class DetailBO {
 		// Obtenemos archivo de propiedades
 		try {
 			
+			parametrosDTO = properties.obtenerPropiedades();
 			mapItem = new MapItemUtil();
 			nota = mapItem.MapItemToNota(item);
 			
-			parametrosDTO = properties.obtenerPropiedades();
 			 dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 			nota.setFdFechaPublicacion(dateFormat.format(new Date()));
 			nota.setFdFechaModificacion(dateFormat.format(new Date()));
@@ -123,6 +88,33 @@ public class DetailBO {
 			parametrosDTO.setFcIdSeccion(categoria.getFcIdSeccion());
 			// Crop Images Facebook , Miniatura 
 			
+			
+			try {
+				imgRequest = new ImageRequest();
+				imgRequest.setType("FB");
+				imgRequest.setNameImage(item.getMain_image().getSrc());
+				imgRequest.setxPosition(item.getMain_image().getCordenadas_facebook().getX());
+				imgRequest.setyPosition(item.getMain_image().getCordenadas_facebook().getY());
+				
+				ImageResponse responseFB =uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
+				
+				logger.debug(" ImageResponse [ responseFB ]: "+responseFB.toString());
+				
+				imgRequest.setType("cuadrada");
+				imgRequest.setxPosition(item.getMain_image().getCordenadas_miniatura().getX());
+				imgRequest.setyPosition(item.getMain_image().getCordenadas_miniatura().getY());
+				
+				ImageResponse responseCuadrada = uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
+				
+				logger.debug(" ImageResponse [ responseCuadrada ]: "+responseCuadrada.toString());
+				
+			}catch (Exception e) {
+				logger.error("Exception  createPlantillaAMP [ saveItem  ] : "+e.getMessage());
+				throw new DetailBOException(e.getMessage());
+			}
+			
+			
+		
 			
 
 			// ruta con dominio wwww.unotv.com ó http://dev-unotv.tmx-internacional.net
@@ -137,8 +129,14 @@ public class DetailBO {
 			// Validamos si la nota contiene video de ooyala
 			logger.debug("**TIPO DE NOTA: " + nota.getFcIdTipoNota());
 
-			// Guardamos o actualizamos la nota en la base de datos.
-			res = notaBO.saveOrUpdate(nota);
+			try {
+				// Guardamos o actualizamos la nota en la base de datos.
+				res = notaBO.saveOrUpdate(nota);
+
+			} catch (Exception e) {
+				logger.error("Exception  saveOrUpdate [ saveItem  ] : " + e.getMessage());
+				throw new DetailBOException(e.getMessage());
+			}
 			// res = detailCallWS.insertNota(nota);
 
 			if (res > 0) {
@@ -241,23 +239,7 @@ public class DetailBO {
 						throw new DetailBOException(boe.getMessage());
 					}	
 
-					imgRequest = new ImageRequest();
-					imgRequest.setType("FB");
-					imgRequest.setNameImage(item.getMain_image().getSrc());
-					imgRequest.setxPosition(item.getMain_image().getCordenadas_facebook().getX());
-					imgRequest.setyPosition(item.getMain_image().getCordenadas_facebook().getY());
 					
-					ImageResponse responseFB =uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
-					
-					logger.debug(" ImageResponse [ responseFB ]: "+responseFB.toString());
-					
-					imgRequest.setType("cuadrada");
-					imgRequest.setxPosition(item.getMain_image().getCordenadas_miniatura().getX());
-					imgRequest.setyPosition(item.getMain_image().getCordenadas_miniatura().getY());
-					
-					ImageResponse responseCuadrada = uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
-					
-					logger.debug(" ImageResponse [ responseCuadrada ]: "+responseCuadrada.toString());
 				}
 
 			}
@@ -270,6 +252,49 @@ public class DetailBO {
 
 		return res;
 
+	}
+	
+	
+
+	public int expireItem(Item item) throws DetailBOException {
+		
+		int res = 0;
+		NNota nota= null;
+		MapItemUtil mapItem = null;
+		ParametrosDTO parametrosDTO = null;
+		PropertiesUtils properties = null;
+		
+		try {
+			
+			properties = new PropertiesUtils();
+			parametrosDTO = properties.obtenerPropiedades();
+			mapItem = new MapItemUtil();
+			nota = mapItem.MapItemToNota(item);
+			
+			Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
+			parametrosDTO.setFcIdSeccion(categoria.getFcIdSeccion());
+			
+			
+			//Ruta para borrar html
+			String carpetaContenido=parametrosDTO.getPathFiles()+Utils.getRutaContenido(nota, parametrosDTO);			
+			logger.debug("carpetaContenido: "+carpetaContenido);			
+			//Borramos html
+			boolean delteHTML = Utils.deleteHTML(carpetaContenido);
+			logger.debug("Se borro direcorio: "+delteHTML);
+			
+			
+			if(delteHTML) {
+				res = detailCallWS.expireItem(nota);
+			}
+			
+		} catch (Exception e) {
+			logger.error("Exception expireItem  [ DetailBO ]: ", e);
+			throw new DetailBOException(e.getMessage());
+		}
+
+	
+		
+		return res;
 	}
 
 	public Item findNotaById(String idContenido) throws DetailBOException {
