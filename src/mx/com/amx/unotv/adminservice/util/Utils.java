@@ -38,6 +38,32 @@ public class Utils {
 
 	// LOG
 	private static Logger LOG = Logger.getLogger(Utils.class);
+	
+	
+	public static boolean deleteHTML(String pathHTML) 
+	{
+		LOG.debug("Inicia deleteHTML");
+		LOG.debug("pathHTML: "+pathHTML);
+		try {
+			File fileHTML = new File(pathHTML+"/index.html") ;
+			File fileAMP = new File(pathHTML+"/amp.html") ;
+			File fileJSON = new File(pathHTML+"/detalle.json") ;
+
+			//Borramos archivos
+			fileHTML.delete();
+			fileAMP.delete();
+			fileJSON.delete();
+			
+			//Borramos directorio
+			File directorio = new File(pathHTML) ;
+			return directorio.delete();
+			
+		} catch (Exception e) {
+			LOG.error("Exception en deleteHTML: ",e);
+			return false;
+		} 		
+	}
+	
 
 	public static String getRutaContenido(NNota nota, ParametrosDTO parametrosDTO) throws Exception {
 		LOG.debug("**** Inicia getRutaContenido[Utils]");
@@ -45,7 +71,7 @@ public class Utils {
 
 		try {
 
-			rutaContenido =  nota.getFcIdSeccion() + "/" + nota.getFcIdCategoria()
+			rutaContenido =  parametrosDTO.getFcIdSeccion() + "/" + nota.getFcIdCategoria()
 					+ "/detalle/" + nota.getFcFriendlyUrl() ;
 
 			LOG.debug("rutaContenido: " + rutaContenido);
@@ -93,7 +119,7 @@ public class Utils {
 
 				id_categoria = contentDTO.getFcIdCategoria();
 
-				id_seccion = contentDTO.getFcIdSeccion();
+				id_seccion = parametrosDTO.getFcIdSeccion();
 
 				// Nos conectamos a la plantilla detalle-prerender de portal
 				LOG.info("---- Conectandose a : " + parametrosDTO.getTemplateHtml());
@@ -187,7 +213,7 @@ public class Utils {
 		// Remplaza comscore
 		try {
 			HTML = HTML.replace("$WCM_NAVEGACION_COMSCORE$",
-					contentDTO.getFcIdTipoNota() + "." + contentDTO.getFcIdSeccion() + "."
+					contentDTO.getFcIdTipoNota() + "." + parametrosDTO.getFcIdSeccion() + "."
 							+ contentDTO.getFcIdCategoria() + "." + parametrosDTO.getPathDetalle() + "."
 							+ contentDTO.getFcFriendlyUrl());
 		} catch (Exception e) {
@@ -815,7 +841,7 @@ public class Utils {
 
 		// Remplaza nota:tipo_seccion [$META_TIPO_SECCION$]
 		try {
-			HTML = HTML.replace("$META_TIPO_SECCION$", contentDTO.getFcIdSeccion());
+			HTML = HTML.replace("$META_TIPO_SECCION$", parametrosDTO.getFcIdSeccion());
 		} catch (Exception e) {
 			HTML = HTML.replace("$META_TIPO_SECCION$", "");
 			LOG.error("Error al remplazar $META_TIPO_SECCION$");
@@ -823,7 +849,7 @@ public class Utils {
 
 		// Remplaza nota:seccion [$META_SECCION$]
 		try {
-			HTML = HTML.replace("$META_SECCION$", contentDTO.getFcIdSeccion());
+			HTML = HTML.replace("$META_SECCION$", parametrosDTO.getFcIdSeccion());
 		} catch (Exception e) {
 			HTML = HTML.replace("$META_SECCION$", "");
 			LOG.error("Error al remplazar $META_SECCION$");
@@ -960,7 +986,7 @@ public class Utils {
 		}*/
 		
 		try {		
-			HTML = HTML.replace("$WCM_NAVEGACION_COMSCORE$",  nota.getFcIdSeccion()+"."+ nota.getFcIdCategoria()+ ".detalle." + nota.getFcFriendlyUrl());
+			HTML = HTML.replace("$WCM_NAVEGACION_COMSCORE$",  parametrosDTO.getFcIdSeccion()+"."+ nota.getFcIdCategoria()+ ".detalle." + nota.getFcFriendlyUrl());
 		} catch (Exception e) {
 			LOG.error("Error al sustituir navegacion  comscore");
 		}
@@ -1080,14 +1106,14 @@ public class Utils {
 		}	
 		
 		try {			
-			HTML = HTML.replace("$URL_WHATSAPP$", "https://www.unotv.com/" + nota.getFcIdSeccion()+"/"+ nota.getFcIdCategoria()+"/detalle/" +nota.getFcFriendlyUrl()+"/");
+			HTML = HTML.replace("$URL_WHATSAPP$", "https://www.unotv.com/" + parametrosDTO.getFcIdSeccion()+"/"+ nota.getFcIdCategoria()+"/detalle/" +nota.getFcFriendlyUrl()+"/");
 		} catch (Exception e) {
 			HTML = HTML.replace("$URL_WHATSAPP$", "");
 			LOG.error("Error al remplazar $URL_WHATSAPP$");
 		}
 		
 		try {			
-			HTML = HTML.replace("$URL_PAGE$", "https://www.unotv.com/"+ nota.getFcIdSeccion()+"/"+ nota.getFcIdCategoria()+"/detalle/" +nota.getFcFriendlyUrl()+"/");
+			HTML = HTML.replace("$URL_PAGE$", "https://www.unotv.com/"+ parametrosDTO.getFcIdSeccion()+"/"+ nota.getFcIdCategoria()+"/detalle/" +nota.getFcFriendlyUrl()+"/");
 		} catch (Exception e) {
 			HTML = HTML.replace("$WCM_URL_PAGE$", "");
 			LOG.error("Error al remplazar $WCM_URL_PAGE$");

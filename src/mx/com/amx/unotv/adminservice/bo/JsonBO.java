@@ -51,7 +51,7 @@ public class JsonBO {
 			
 			
 			categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
-			seccion = catalogsCallWS.getSeccionById(nota.getFcIdSeccion());
+			seccion = catalogsCallWS.getSeccionById(categoria.getFcIdSeccion());
 			//ExtraInfoContentDTO extraInfoContentDTO = llamadasWSDAO._getExtraInfoContent(contentDTO.getFcNombre(), parametrosDTO);
 			//LOG.debug("extraInfoContentDTO: "+extraInfoContentDTO);
 						
@@ -89,7 +89,7 @@ public class JsonBO {
 			
 			
 			jsonNota.put("desc_categoria",nota.getFcIdCategoria());
-			jsonNota.put("desc_seccion", nota.getFcIdSeccion());
+			jsonNota.put("desc_seccion", categoria.getFcIdSeccion());
 			//jsonNota.put("posicion_galeria", contentDTO.getPlaceGallery());
 			
 			jsonDetalle.put("noticia", jsonNota);

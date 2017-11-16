@@ -63,6 +63,38 @@ public class DetailCallWS {
 		URL_WS_BASE = props.getProperty(ambiente + ".url.ws.base");
 		URL_WS_DETAIL = props.getProperty(ambiente + ".url.ws.detail");
 	}
+	
+	
+	
+	
+	public int expireItem(NNota nota) throws DetailCallWSException {
+
+		int res = 0;
+		String metodo = "/expire_item";
+		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
+
+		logger.info("--- expireItem --- [ DetailCallWS ] --- ");
+		logger.info("--- URL : " + URL_WS);
+
+		try {
+	
+
+			res = restTemplate.postForObject(URL_WS, nota, Integer.class);
+
+			logger.info(" Registros obtenidos --> " + res);
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException expireItem [ DetailCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException expireItem[ DetailCallWS ]: ", rre);
+			throw new DetailCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception expireItem  [ DetailCallWS ]: ", e);
+			throw new DetailCallWSException(e.getMessage());
+		}
+
+		return res;
+
+	}
 
 	public int insertNota(NNota nota) throws DetailCallWSException {
 
@@ -74,7 +106,7 @@ public class DetailCallWS {
 		logger.info("--- URL : " + URL_WS);
 
 		try {
-			logger.info("URL_WS: " + URL_WS);
+			
 
 			res = restTemplate.postForObject(URL_WS, nota, Integer.class);
 

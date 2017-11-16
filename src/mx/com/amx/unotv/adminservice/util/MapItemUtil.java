@@ -36,7 +36,7 @@ public class MapItemUtil {
 		nota.setFcIdContenido((item.getId()==  null ) ? "" : item.getId());
 		
 		nota.setFcIdPcode((item.getMain_video().getP_code()==  null ) ? "" : item.getMain_video().getP_code());
-		nota.setFcIdSeccion((item.getSection()==  null ) ? "" :  item.getSection());
+	
 		
 		nota.setFcIdUsuario((item.getId_user()==  null ) ? "" :  item.getId_user());
 		nota.setFcImagen((item.getMain_image().getSrc()==  null ) ? "" :  item.getMain_image().getSrc());

@@ -6,7 +6,6 @@ package mx.com.amx.unotv.adminservice.bo;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import mx.com.amx.unotv.adminservice.bo.exception.DetailBOException;
 import mx.com.amx.unotv.adminservice.bo.exception.JsonBOException;
 import mx.com.amx.unotv.adminservice.dto.ContentDTO;
-import mx.com.amx.unotv.adminservice.dto.PushAmpDTO;
 import mx.com.amx.unotv.adminservice.model.Categoria;
 import mx.com.amx.unotv.adminservice.model.HNota;
 import mx.com.amx.unotv.adminservice.model.NNota;
@@ -54,12 +52,49 @@ public class DetailBO {
 	@Autowired
 	UploadImgCallWS uploadImgCallWS;
 
+
+	public int expireItem(Item item) throws DetailBOException {
+		
+		int res = 0;
+		NNota nota= null;
+		MapItemUtil mapItem = null;
+		ParametrosDTO parametrosDTO = null;
+		PropertiesUtils properties = null;
+		
+		try {
+			
+			properties = new PropertiesUtils();
+			parametrosDTO = properties.obtenerPropiedades();
+			mapItem = new MapItemUtil();
+			nota = mapItem.MapItemToNota(item);
+			//Ruta para borrar html
+			String carpetaContenido=parametrosDTO.getPathFiles()+Utils.getRutaContenido(nota, parametrosDTO);			
+			logger.debug("carpetaContenido: "+carpetaContenido);			
+			//Borramos html
+			boolean delteHTML = Utils.deleteHTML(carpetaContenido);
+			logger.debug("Se borro direcorio: "+delteHTML);
+			
+			
+			if(delteHTML) {
+				res = detailCallWS.expireItem(nota);
+			}
+			
+		} catch (Exception e) {
+			logger.error("Exception expireItem  [ DetailBO ]: ", e);
+			throw new DetailBOException(e.getMessage());
+		}
+
+	
+		
+		return res;
+	}
+	
 	public int saveItem(Item item) throws DetailBOException {
 		logger.debug("*** Inicia saveItem [ DetailBO ] ***");
 
 		ParametrosDTO parametrosDTO = null;
 		PropertiesUtils properties = new PropertiesUtils();
-		List<String> listError = new ArrayList<String>();
+	
 		boolean success= false;
 
 		String id_facebook = "";
@@ -83,7 +118,9 @@ public class DetailBO {
 			nota.setFdFechaPublicacion(dateFormat.format(new Date()));
 			nota.setFdFechaModificacion(dateFormat.format(new Date()));
 			
-			
+			Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
+			parametrosDTO.setNombreCategoria(categoria.getFcDescripcion());
+			parametrosDTO.setFcIdSeccion(categoria.getFcIdSeccion());
 			// Crop Images Facebook , Miniatura 
 			
 			
@@ -122,8 +159,7 @@ public class DetailBO {
 					}
 					
 					
-					Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
-					parametrosDTO.setNombreCategoria(categoria.getFcDescripcion());
+					
 					
 					
 					try {				
@@ -163,7 +199,7 @@ public class DetailBO {
 					
 					ContentDTO contentDTO = new ContentDTO();
 					
-					Seccion seccion = catalogsCallWS.getSeccionById(nota.getFcIdSeccion());
+					Seccion seccion = catalogsCallWS.getSeccionById(categoria.getFcIdSeccion());
 					
 					
 				    Date parsedDate = dateFormat.parse(nota.getFdFechaPublicacion());
@@ -173,7 +209,7 @@ public class DetailBO {
 					contentDTO.setClRtfContenido((nota.getClRtfContenido() ==  null ) ? "" : nota.getClRtfContenido() );
 					contentDTO.setFcEscribio( (nota.getFcEscribio() ==  null ) ? "" : nota.getFcEscribio());
 					contentDTO.setFcIdCategoria((nota.getFcIdCategoria() ==  null ) ? "" : nota.getFcIdCategoria());
-					contentDTO.setFcSeccion((nota.getFcIdSeccion() ==  null ) ? "" : nota.getFcIdSeccion());
+					contentDTO.setFcSeccion((categoria.getFcIdSeccion() ==  null ) ? "" : categoria.getFcIdSeccion()); // categoria.getFcIdSeccion()
 					contentDTO.setFcAlternateTextVideo( (nota.getFcAlternativeTextOoyala() ==  null ) ? "" : nota.getFcAlternativeTextOoyala());
 					contentDTO.setFcDurationVideo( (nota.getFcDurationOoyala() ==  null ) ? "" : nota.getFcDurationOoyala());
 					contentDTO.setFcFuente((nota.getFcFuente() ==  null ) ? "" : nota.getFcFuente() );
