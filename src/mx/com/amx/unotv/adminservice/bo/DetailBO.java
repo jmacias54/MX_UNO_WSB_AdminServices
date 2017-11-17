@@ -28,6 +28,7 @@ import mx.com.amx.unotv.adminservice.util.Utils;
 import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 import mx.com.amx.unotv.adminservice.ws.DetailCallWS;
 import mx.com.amx.unotv.adminservice.ws.FacebookCallWS;
+import mx.com.amx.unotv.adminservice.ws.HNotaCallWS;
 import mx.com.amx.unotv.adminservice.ws.UploadImgCallWS;
 
 
@@ -51,6 +52,8 @@ public class DetailBO {
 	FacebookCallWS facebookCallWS;
 	@Autowired
 	UploadImgCallWS uploadImgCallWS;
+	@Autowired
+	HNotaCallWS hNotaCallWS;
 
 
 	
@@ -79,9 +82,10 @@ public class DetailBO {
 			mapItem = new MapItemUtil();
 			nota = mapItem.MapItemToNota(item);
 			
-			 dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 			nota.setFdFechaPublicacion(dateFormat.format(new Date()));
 			nota.setFdFechaModificacion(dateFormat.format(new Date()));
+			nota.setFcIdEstatus("PUB");
 			
 			Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
 			parametrosDTO.setNombreCategoria(categoria.getFcDescripcion());
@@ -137,7 +141,7 @@ public class DetailBO {
 				logger.error("Exception  saveOrUpdate [ saveItem  ] : " + e.getMessage());
 				throw new DetailBOException(e.getMessage());
 			}
-			// res = detailCallWS.insertNota(nota);
+			
 
 			if (res > 0) {
 				// Guardamos o actualizamos los Tags de la nota
@@ -270,6 +274,7 @@ public class DetailBO {
 			parametrosDTO = properties.obtenerPropiedades();
 			mapItem = new MapItemUtil();
 			nota = mapItem.MapItemToNota(item);
+			nota.setFcIdEstatus("CAD");
 			
 			Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
 			parametrosDTO.setFcIdSeccion(categoria.getFcIdSeccion());
@@ -306,7 +311,7 @@ public class DetailBO {
 		try {
 			
 			
-			nota = detailCallWS.findNotaById(idContenido);
+			nota = hNotaCallWS.findById(idContenido);
 			mapItem = new MapItemUtil();
 			item = mapItem.MapNotaToItem(nota);
 			

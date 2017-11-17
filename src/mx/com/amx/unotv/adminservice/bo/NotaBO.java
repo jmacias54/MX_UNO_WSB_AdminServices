@@ -27,49 +27,71 @@ public class NotaBO {
 
 	public int saveOrUpdate(NNota nota) throws NotaBOException {
 		int res = 0;
-		HNota hNota = null;
-		NNota nNota = null;
 
 		try {
-			hNota = detailCallWS.findNotaById(nota.getFcIdContenido());
-			nNota = detailCallWS.findNNotaById(nota.getFcIdContenido());
 
-			// si no hay nota en HNota
-			if (hNota == null) {
-				// inserta NNota
+			if (validateIfExistHNota(nota.getFcIdContenido())) {
+				if (validateIfExistNNota(nota.getFcIdContenido())) {
 
-				res = nNotaCallWS.insertNota(nota);
-
-				// valida inserccion NNota
-				if (res > 0) {
-
-					// inserta HNota
-					res = hNotaCallWS.insertNota(nota);
-				}
-
-			} else {// si hay nota en HNota
-
-				// si no hay nota en NNota
-				if (nNota == null) {
-
-					// inserta NNota
-					res = nNotaCallWS.insertNota(nota);
-
+					res = nNotaCallWS.update(nota);
 				} else {
 
-					// actualiza NNota
-					res = nNotaCallWS.updateNota(nota);
-
+					res = nNotaCallWS.insert(nota);
 				}
 
 				if (res > 0)
-
-					// actualiza HNota
 					res = hNotaCallWS.updateNota(nota);
+
+			} else {
+
+				res = insert(nota);
+
 			}
 
 		} catch (Exception e) {
 
+			throw new NotaBOException(e.getMessage());
+		}
+
+		return res;
+	}
+
+	public boolean validateIfExistNNota(String idContenido) throws NotaBOException {
+		NNota res = null;
+
+		try {
+			res = nNotaCallWS.findById(idContenido);
+		} catch (Exception e) {
+			throw new NotaBOException(e.getMessage());
+		}
+		return ((res == null) ? false : true);
+	}
+
+	public boolean validateIfExistHNota(String idContenido) throws NotaBOException {
+		HNota res = null;
+
+		try {
+			res = hNotaCallWS.findById(idContenido);
+		} catch (Exception e) {
+			throw new NotaBOException(e.getMessage());
+		}
+		return ((res == null) ? false : true);
+	}
+
+	public int insert(NNota nota) throws NotaBOException {
+
+		// inserta NNota
+
+		int res = 0;
+
+		try {
+
+			res = nNotaCallWS.insert(nota);
+			if (res > 0)
+
+				res = hNotaCallWS.insertNota(nota);
+
+		} catch (Exception e) {
 			throw new NotaBOException(e.getMessage());
 		}
 

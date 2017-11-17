@@ -6,6 +6,7 @@ package mx.com.amx.unotv.adminservice.ws;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -14,7 +15,9 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import mx.com.amx.unotv.adminservice.model.HNota;
 import mx.com.amx.unotv.adminservice.model.NNota;
+import mx.com.amx.unotv.adminservice.ws.exception.DetailCallWSException;
 import mx.com.amx.unotv.adminservice.ws.exception.HNotaCallWSException;
 
 /**
@@ -27,7 +30,7 @@ public class HNotaCallWS {
 
 	private RestTemplate restTemplate;
 	private String URL_WS_BASE = "";
-	private String URL_WS_DETAIL = "";
+	private String URL_WS_HNOTA = "";
 	private HttpHeaders headers = new HttpHeaders();
 	private final Properties props = new Properties();
 
@@ -57,15 +60,15 @@ public class HNotaCallWS {
 		}
 		String ambiente = props.getProperty("ambiente");
 		URL_WS_BASE = props.getProperty(ambiente + ".url.ws.base");
-		URL_WS_DETAIL = props.getProperty(ambiente + ".url.ws.detail");
+		URL_WS_HNOTA = props.getProperty(ambiente + ".url.ws.hnota");
 	}
 	
 	
 	public int insertNota(NNota nota) throws HNotaCallWSException {
 
 		int res = 0;
-		String metodo = "/save_h_nota";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
+		String metodo = "/insert";
+		String URL_WS = URL_WS_BASE + URL_WS_HNOTA + metodo;
 
 		logger.info("--- insertNota --- [ HNotaCallWS ] --- ");
 		logger.info("--- URL : " + URL_WS);
@@ -94,10 +97,10 @@ public class HNotaCallWS {
 	public int updateNota(NNota nota) throws HNotaCallWSException {
 
 		int res = 0;
-		String metodo = "/update_h_nota";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
+		String metodo = "/update";
+		String URL_WS = URL_WS_BASE + URL_WS_HNOTA + metodo;
 
-		logger.info("--- updateNota --- [ NNotaCallWS ] --- ");
+		logger.info("--- updateNota --- [ HNotaCallWS ] --- ");
 		logger.info("--- URL : " + URL_WS);
 
 		try {
@@ -108,16 +111,49 @@ public class HNotaCallWS {
 			logger.info(" Registros obtenidos --> " + res);
 
 		} catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException updateNota [ NNotaCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException updateNota[ NNotaCallWS ]: ", rre);
+			logger.error("RestClientResponseException updateNota [ HNotaCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException updateNota[ HNotaCallWS ]: ", rre);
 			throw new HNotaCallWSException(rre.getResponseBodyAsString());
 		} catch (Exception e) {
-			logger.error("Exception updateNota  [ NNotaCallWS ]: ", e);
+			logger.error("Exception updateNota  [ HNotaCallWS ]: ", e);
 			throw new HNotaCallWSException(e.getMessage());
 		}
 
 		return res;
 
+	}
+	
+	
+	public HNota findById(String idContenido) throws DetailCallWSException {
+
+		
+		String URL_WS = URL_WS_BASE + URL_WS_HNOTA ;
+
+		logger.info("--- findById --- [ HNotaCallWS ] --- ");
+		logger.info("--- URL : " + URL_WS);
+
+		HNota nota = null;
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			nota = restTemplate.postForObject(URL_WS + "/" + idContenido, entity, HNota.class);
+
+			logger.info(" Registros obtenidos --> " + nota.toString());
+
+		} catch (NullPointerException npe) {
+			
+			return null;
+		}catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException findById [ HNotaCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException findById[ HNotaCallWS ]: ", rre);
+			throw new DetailCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception findById  [ HNotaCallWS ]: ", e);
+			throw new DetailCallWSException(e.getMessage());
+		}
+
+		return nota;
 	}
 	
 	

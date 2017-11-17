@@ -6,6 +6,7 @@ package mx.com.amx.unotv.adminservice.ws;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -27,7 +28,7 @@ public class NNotaCallWS {
 
 	private RestTemplate restTemplate;
 	private String URL_WS_BASE = "";
-	private String URL_WS_DETAIL = "";
+	private String URL_WS_NNOTA = "";
 	private HttpHeaders headers = new HttpHeaders();
 	private final Properties props = new Properties();
 
@@ -57,17 +58,17 @@ public class NNotaCallWS {
 		}
 		String ambiente = props.getProperty("ambiente");
 		URL_WS_BASE = props.getProperty(ambiente + ".url.ws.base");
-		URL_WS_DETAIL = props.getProperty(ambiente + ".url.ws.detail");
+		URL_WS_NNOTA = props.getProperty(ambiente + ".url.ws.nnota");
 	}
 	
 	
 
 	
-	public int insertNota(NNota nota) throws NNotaCallWSException {
+	public int insert(NNota nota) throws NNotaCallWSException {
 
 		int res = 0;
-		String metodo = "/save_n_nota";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
+		String metodo = "/insert";
+		String URL_WS = URL_WS_BASE + URL_WS_NNOTA + metodo;
 
 		logger.info("--- insertNota --- [ NNotaCallWS ] --- ");
 		logger.info("--- URL : " + URL_WS);
@@ -80,11 +81,11 @@ public class NNotaCallWS {
 			logger.info(" Registros obtenidos --> " + res);
 
 		} catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException insertNota [ NNotaCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException insertNota[ NNotaCallWS ]: ", rre);
+			logger.error("RestClientResponseException insert [ NNotaCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException insert[ NNotaCallWS ]: ", rre);
 			throw new NNotaCallWSException(rre.getResponseBodyAsString());
 		} catch (Exception e) {
-			logger.error("Exception insertNota  [ NNotaCallWS ]: ", e);
+			logger.error("Exception insert  [ NNotaCallWS ]: ", e);
 			throw new NNotaCallWSException(e.getMessage());
 		}
 
@@ -93,13 +94,13 @@ public class NNotaCallWS {
 	}
 	
 	
-	public int updateNota(NNota nota) throws NNotaCallWSException {
+	public int update(NNota nota) throws NNotaCallWSException {
 
 		int res = 0;
-		String metodo = "/update_n_nota";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
+		String metodo = "/update";
+		String URL_WS = URL_WS_BASE + URL_WS_NNOTA + metodo;
 
-		logger.info("--- updateNota --- [ NNotaCallWS ] --- ");
+		logger.info("--- update --- [ NNotaCallWS ] --- ");
 		logger.info("--- URL : " + URL_WS);
 
 		try {
@@ -110,17 +111,51 @@ public class NNotaCallWS {
 			logger.info(" Registros obtenidos --> " + res);
 
 		} catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException updateNota [ NNotaCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException updateNota[ NNotaCallWS ]: ", rre);
+			logger.error("RestClientResponseException update [ NNotaCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException update[ NNotaCallWS ]: ", rre);
 			throw new NNotaCallWSException(rre.getResponseBodyAsString());
 		} catch (Exception e) {
-			logger.error("Exception updateNota  [ NNotaCallWS ]: ", e);
+			logger.error("Exception update  [ NNotaCallWS ]: ", e);
 			throw new NNotaCallWSException(e.getMessage());
 		}
 
 		return res;
 
 	}
+	
+	
+	public NNota findById(String idContenido) throws NNotaCallWSException {
+
+
+		String URL_WS = URL_WS_BASE + URL_WS_NNOTA ;
+
+		logger.info("--- findById --- [ NNotaCallWS ] --- ");
+		logger.info("--- URL : " + URL_WS);
+
+		NNota nota = null;
+
+		try {
+			logger.info("URL_WS: " + URL_WS);
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			nota = restTemplate.postForObject(URL_WS + "/" + idContenido, entity, NNota.class);
+
+			logger.info(" Registros obtenidos --> " + nota.toString());
+
+		} catch (NullPointerException npe) {
+			
+			return null;
+		}catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException findById [ NNotaCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException findById [ NNotaCallWS ]: ", rre);
+			throw new NNotaCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception findById  [ NNotaCallWS ]: ", e);
+			throw new NNotaCallWSException(e.getMessage());
+		}
+
+		return nota;
+	}
+
 	
 	
 

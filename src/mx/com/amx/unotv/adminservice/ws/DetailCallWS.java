@@ -100,70 +100,9 @@ public class DetailCallWS {
 	
 
 
-	public HNota findNotaById(String idContenido) throws DetailCallWSException {
 
-		String metodo = "/get_item";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
-
-		logger.info("--- findNotaById --- [ DetailCallWS ] --- ");
-		logger.info("--- URL : " + URL_WS);
-
-		HNota nota = null;
-
-		try {
-			logger.info("URL_WS: " + URL_WS);
-			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
-			nota = restTemplate.postForObject(URL_WS + "/" + idContenido, entity, HNota.class);
-
-			logger.info(" Registros obtenidos --> " + nota.toString());
-
-		} catch (NullPointerException npe) {
-			
-			return null;
-		}catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException findNotaById [ DetailCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException findNotaById[ DetailCallWS ]: ", rre);
-			throw new DetailCallWSException(rre.getResponseBodyAsString());
-		} catch (Exception e) {
-			logger.error("Exception findNotaById  [ DetailCallWS ]: ", e);
-			throw new DetailCallWSException(e.getMessage());
-		}
-
-		return nota;
-	}
 	
 	
-	public NNota findNNotaById(String idContenido) throws DetailCallWSException {
-
-		String metodo = "/get_n_nota";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
-
-		logger.info("--- findNotaById --- [ DetailCallWS ] --- ");
-		logger.info("--- URL : " + URL_WS);
-
-		NNota nota = null;
-
-		try {
-			logger.info("URL_WS: " + URL_WS);
-			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
-			nota = restTemplate.postForObject(URL_WS + "/" + idContenido, entity, NNota.class);
-
-			logger.info(" Registros obtenidos --> " + nota.toString());
-
-		} catch (NullPointerException npe) {
-			
-			return null;
-		}catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException findNotaById [ DetailCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException findNotaById[ DetailCallWS ]: ", rre);
-			throw new DetailCallWSException(rre.getResponseBodyAsString());
-		} catch (Exception e) {
-			logger.error("Exception findNotaById  [ DetailCallWS ]: ", e);
-			throw new DetailCallWSException(e.getMessage());
-		}
-
-		return nota;
-	}
 
 	public List<HNota> findAllNota() throws DetailCallWSException {
 	
