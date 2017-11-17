@@ -135,7 +135,8 @@ public class DetailBO {
 
 			try {
 				// Guardamos o actualizamos la nota en la base de datos.
-				res = notaBO.saveOrUpdate(nota);
+				/* se manda item ya que cuando se inserta la nota en las tablas hnota y nnnota , se tienen que insertar en la tabla tags*/
+				res = notaBO.saveOrUpdate(nota,item.getTags());
 
 			} catch (Exception e) {
 				logger.error("Exception  saveOrUpdate [ saveItem  ] : " + e.getMessage());
@@ -165,7 +166,8 @@ public class DetailBO {
 					
 					
 					try {				
-						String html_amp=Utils.createPlantillaAMP(parametrosDTO, nota);	
+						// String html_amp=Utils.createPlantillaAMP(parametrosDTO, nota);
+						Utils.createPlantillaAMP(parametrosDTO, nota);
 						
 						
 						//Enviamos push de AMP

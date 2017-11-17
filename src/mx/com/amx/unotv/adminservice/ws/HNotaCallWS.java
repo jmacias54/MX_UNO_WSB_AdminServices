@@ -64,7 +64,7 @@ public class HNotaCallWS {
 	}
 	
 	
-	public int insertNota(NNota nota) throws HNotaCallWSException {
+	public int insert(NNota nota) throws HNotaCallWSException {
 
 		int res = 0;
 		String metodo = "/insert";
@@ -94,7 +94,7 @@ public class HNotaCallWS {
 	}
 	
 	
-	public int updateNota(NNota nota) throws HNotaCallWSException {
+	public int update(NNota nota) throws HNotaCallWSException {
 
 		int res = 0;
 		String metodo = "/update";

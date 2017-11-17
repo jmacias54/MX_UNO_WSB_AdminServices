@@ -28,6 +28,8 @@
 	<bean id="uploadImgCallWS" class="mx.com.amx.unotv.adminservice.ws.UploadImgCallWS"></bean>
 	<bean id="hNotaCallWS" class="mx.com.amx.unotv.adminservice.ws.HNotaCallWS"></bean>
 	<bean id="nNotaCallWS" class="mx.com.amx.unotv.adminservice.ws.NNotaCallWS"></bean>
+	<bean id="iNotaTagCallWS" class="mx.com.amx.unotv.adminservice.ws.INotaTagCallWS"></bean>
+	<bean id="iHNotaTagCallWS" class="mx.com.amx.unotv.adminservice.ws.IHNotaTagCallWS"></bean>
 	
 	
 	
@@ -42,6 +44,10 @@
 	<bean id="magazineBO" class="mx.com.amx.unotv.adminservice.bo.MagazineBO"></bean>
 	<bean id="notaBO" class="mx.com.amx.unotv.adminservice.bo.NotaBO"></bean>
 	<bean id="jsonBO" class="mx.com.amx.unotv.adminservice.bo.JsonBO"></bean>
+	<bean id="tagBO" class="mx.com.amx.unotv.adminservice.bo.TagBO"></bean>
+	
+	
+	
 	
 	
 	

@@ -24,27 +24,21 @@ public class NotaBO {
 	NNotaCallWS nNotaCallWS;
 	@Autowired
 	HNotaCallWS hNotaCallWS;
+	@Autowired
+	TagBO tagBO;
 
-	public int saveOrUpdate(NNota nota) throws NotaBOException {
+	public int saveOrUpdate(NNota nota, String tags) throws NotaBOException {
 		int res = 0;
 
 		try {
 
 			if (validateIfExistHNota(nota.getFcIdContenido())) {
-				if (validateIfExistNNota(nota.getFcIdContenido())) {
 
-					res = nNotaCallWS.update(nota);
-				} else {
-
-					res = nNotaCallWS.insert(nota);
-				}
-
-				if (res > 0)
-					res = hNotaCallWS.updateNota(nota);
+				res = update(nota, tags);
 
 			} else {
 
-				res = insert(nota);
+				res = insert(nota, tags);
 
 			}
 
@@ -78,18 +72,55 @@ public class NotaBO {
 		return ((res == null) ? false : true);
 	}
 
-	public int insert(NNota nota) throws NotaBOException {
-
-		// inserta NNota
+	private int insert(NNota nota, String tags) throws NotaBOException {
 
 		int res = 0;
 
 		try {
 
-			res = nNotaCallWS.insert(nota);
-			if (res > 0)
+			// se borran tags en las 2tablas intermedias para Negocio e Historico
+			tagBO.deleteIntermediateTags(nota.getFcIdContenido());
+			// se insertan tags en las 2tablas intermedias para Negocio e Historico
+			tagBO.insertIntermediateTags(nota.getFcIdContenido(), tags);
 
-				res = hNotaCallWS.insertNota(nota);
+			res = nNotaCallWS.insert(nota);
+			if (res > 0) {
+				res = hNotaCallWS.insert(nota);
+			}
+
+		} catch (Exception e) {
+			throw new NotaBOException(e.getMessage());
+		}
+
+		return res;
+	}
+
+	private int update(NNota nota, String tags) throws NotaBOException {
+
+		int res = 0;
+
+		try {
+
+			// se borran tags en las 2tablas intermedias para Negocio e Historico
+			tagBO.deleteIntermediateTags(nota.getFcIdContenido());
+			// se insertan tags en las 2tablas intermedias para Negocio e Historico
+			tagBO.insertIntermediateTags(nota.getFcIdContenido(), tags);
+
+			/* si existe informacion en NNota , actualiza */
+			if (validateIfExistNNota(nota.getFcIdContenido())) {
+
+				res = nNotaCallWS.update(nota);
+			} else {/* si no existe informacion en NNota , inserta */
+
+				res = nNotaCallWS.insert(nota);
+			}
+
+			/*
+			 * si se inserto o actualizo informacion en NNota , Inserta informacion en HNota
+			 */
+			if (res > 0) {
+				res = hNotaCallWS.update(nota);
+			}
 
 		} catch (Exception e) {
 			throw new NotaBOException(e.getMessage());
