@@ -29,6 +29,7 @@ import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 import mx.com.amx.unotv.adminservice.ws.DetailCallWS;
 import mx.com.amx.unotv.adminservice.ws.FacebookCallWS;
 import mx.com.amx.unotv.adminservice.ws.HNotaCallWS;
+import mx.com.amx.unotv.adminservice.ws.NNotaCallWS;
 import mx.com.amx.unotv.adminservice.ws.UploadImgCallWS;
 
 
@@ -45,6 +46,8 @@ public class DetailBO {
 	@Autowired
 	NotaBO notaBO;
 	@Autowired
+	NNotaCallWS nNotaCallWS;
+	@Autowired
 	JsonBO jsonBO;
 	@Autowired
 	CatalogsCallWS catalogsCallWS;
@@ -54,7 +57,8 @@ public class DetailBO {
 	UploadImgCallWS uploadImgCallWS;
 	@Autowired
 	HNotaCallWS hNotaCallWS;
-
+	@Autowired
+	MapItemUtil mapItemUtil;
 
 	
 	public int saveItem(Item item) throws DetailBOException {
@@ -71,7 +75,7 @@ public class DetailBO {
 		int res = 0;
 		SimpleDateFormat dateFormat;
 		
-		MapItemUtil mapItem = null;
+		
 		NNota nota= null;
 		ImageRequest imgRequest = null;
 
@@ -79,8 +83,8 @@ public class DetailBO {
 		try {
 			
 			parametrosDTO = properties.obtenerPropiedades();
-			mapItem = new MapItemUtil();
-			nota = mapItem.MapItemToNota(item);
+		
+			nota = mapItemUtil.MapItemToNota(item);
 			
 			dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 			nota.setFdFechaPublicacion(dateFormat.format(new Date()));
@@ -113,7 +117,7 @@ public class DetailBO {
 				logger.debug(" ImageResponse [ responseCuadrada ]: "+responseCuadrada.toString());
 				
 			}catch (Exception e) {
-				logger.error("Exception  createPlantillaAMP [ saveItem  ] : "+e.getMessage());
+				logger.error("--- Exception  createPlantillaAMP [ saveItem  ] : "+e.getMessage());
 				throw new DetailBOException(e.getMessage());
 			}
 			
@@ -139,7 +143,7 @@ public class DetailBO {
 				res = notaBO.saveOrUpdate(nota,item.getTags());
 
 			} catch (Exception e) {
-				logger.error("Exception  saveOrUpdate [ saveItem  ] : " + e.getMessage());
+				logger.error("--- Exception  saveOrUpdate [ saveItem  ] : " + e.getMessage());
 				throw new DetailBOException(e.getMessage());
 			}
 			
@@ -157,7 +161,7 @@ public class DetailBO {
 					try {
 						jsonBO.generaDetalleJson(nota, parametrosDTO, carpetaContenido);
 					} catch (JsonBOException je) {
-						logger.error("Exception  generaDetalleJson [ saveItem  ] : " + je.getMessage());
+						logger.error("--- Exception  generaDetalleJson [ saveItem  ] : " + je.getMessage());
 						throw new DetailBOException(je.getMessage());
 					}
 					
@@ -194,7 +198,7 @@ public class DetailBO {
 						
 						
 					} catch (Exception ampe) {
-						logger.error("Exception  createPlantillaAMP [ saveItem  ] : "+ampe.getMessage());
+						logger.error("--- Exception  createPlantillaAMP [ saveItem  ] : "+ampe.getMessage());
 						throw new DetailBOException(ampe.getMessage());
 					}
 					
@@ -241,7 +245,7 @@ public class DetailBO {
 						 // id_facebook = facebookCallWS.insertUpdateArticleFB(contentDTO, parametrosDTO);
 						logger.debug("id_facebook: "+id_facebook);
 					} catch (Exception boe) {
-						logger.error("Exception  facebookCallWS  [ saveItem  ] : "+boe.getMessage());
+						logger.error("--- Exception  facebookCallWS  [ saveItem  ] : "+boe.getMessage());
 						throw new DetailBOException(boe.getMessage());
 					}	
 
@@ -252,7 +256,7 @@ public class DetailBO {
 			
 
 		} catch (Exception e) {
-			logger.error("Exception saveItem  [ DetailBO ]: ", e);
+			logger.error("--- Exception saveItem  [ DetailBO ]: ", e);
 			throw new DetailBOException(e.getMessage());
 		}
 
@@ -261,12 +265,31 @@ public class DetailBO {
 	}
 	
 	
+	public int reviewItem(Item item) throws DetailBOException {
+		
+		int res = 0;
+		NNota nota= null;
 
+		
+		try {
+			
+
+			
+			nota = mapItemUtil.MapItemToNota(item);
+			res = notaBO.reviewItem(nota,item.getTags());
+			
+		} catch (Exception e) {
+			logger.error("--- Exception reviewItem  [ DetailBO ]: ", e);
+			throw new DetailBOException(e.getMessage());
+		}
+		return res;
+	}
+	
 	public int expireItem(Item item) throws DetailBOException {
 		
 		int res = 0;
 		NNota nota= null;
-		MapItemUtil mapItem = null;
+
 		ParametrosDTO parametrosDTO = null;
 		PropertiesUtils properties = null;
 		
@@ -274,9 +297,8 @@ public class DetailBO {
 			
 			properties = new PropertiesUtils();
 			parametrosDTO = properties.obtenerPropiedades();
-			mapItem = new MapItemUtil();
-			nota = mapItem.MapItemToNota(item);
-			nota.setFcIdEstatus("CAD");
+			nota = mapItemUtil.MapItemToNota(item);
+			
 			
 			Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
 			parametrosDTO.setFcIdSeccion(categoria.getFcIdSeccion());
@@ -291,16 +313,15 @@ public class DetailBO {
 			
 			
 			if(delteHTML) {
-				res = detailCallWS.expireItem(nota);
+				
+				res = notaBO.expireItem(nota);
+			
 			}
 			
 		} catch (Exception e) {
-			logger.error("Exception expireItem  [ DetailBO ]: ", e);
+			logger.error(" --- Exception expireItem  [ DetailBO ]: ", e);
 			throw new DetailBOException(e.getMessage());
 		}
-
-	
-		
 		return res;
 	}
 
@@ -308,17 +329,16 @@ public class DetailBO {
 
 		HNota nota = null;
 		Item item = null;
-		MapItemUtil mapItem = null;
+	
 
 		try {
 			
 			
 			nota = hNotaCallWS.findById(idContenido);
-			mapItem = new MapItemUtil();
-			item = mapItem.MapNotaToItem(nota);
+			item = mapItemUtil.MapNotaToItem(nota);
 			
 		} catch (Exception e) {
-			logger.error("Exception findNotaById  [ DetailBO ]: ", e);
+			logger.error(" --- Exception findNotaById  [ DetailBO ]: ", e);
 			throw new DetailBOException(e.getMessage());
 		}
 
@@ -331,7 +351,7 @@ public class DetailBO {
 		try {
 			lista = detailCallWS.findAllNota();
 		} catch (Exception e) {
-			logger.error("Exception findAllNota  [ DetailBO ]: ", e);
+			logger.error(" --- Exception findAllNota  [ DetailBO ]: ", e);
 			throw new DetailBOException(e.getMessage());
 		}
 

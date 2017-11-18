@@ -5,12 +5,8 @@ package mx.com.amx.unotv.adminservice.bo;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import mx.com.amx.unotv.adminservice.bo.exception.TagBOException;
-import mx.com.amx.unotv.adminservice.model.IHNotaTag;
-import mx.com.amx.unotv.adminservice.model.INotaTag;
-import mx.com.amx.unotv.adminservice.ws.IHNotaTagCallWS;
-import mx.com.amx.unotv.adminservice.ws.INotaTagCallWS;
+
 
 /**
  * @author Jesus A. Macias Benitez
@@ -19,11 +15,12 @@ import mx.com.amx.unotv.adminservice.ws.INotaTagCallWS;
 public class TagBO {
 
 	private static Logger logger = Logger.getLogger(TagBO.class);
+	
 
 	@Autowired
-	INotaTagCallWS iNotaTagCallWS;
+	INotaTagBO iNotaTagBO;
 	@Autowired
-	IHNotaTagCallWS iHNotaTagCallWS;
+	IHNotaTagBO iHNotaTagBO;
 
 	/*
 	 * Borra informacion en las tablas intermedias uno_i_nota_tags ,
@@ -31,12 +28,14 @@ public class TagBO {
 	 * 
 	 */
 	public void deleteIntermediateTags(String idContenido) {
+		logger.debug(" --- deleteIntermediateTags [ TagBO ] --- ");
+		logger.debug(" --- Se Elimina  Informacion de las tablas I_NOTA_TAG , I_H_NOTA_TAG --- ");
 
 		try {
-			iNotaTagCallWS.delete(idContenido);
-			iHNotaTagCallWS.delete(idContenido);
+			iNotaTagBO.delete(idContenido);
+			iHNotaTagBO.delete(idContenido);
 		} catch (Exception e) {
-			logger.error("Exception deleteIntermediateTags  [ TagBO ]: ", e);
+			logger.error("--- Exception deleteIntermediateTags  [ TagBO ]: ", e);
 			new TagBOException(e.getMessage());
 		}
 
@@ -47,6 +46,8 @@ public class TagBO {
 	 * uno_i_h_nota_tags
 	 */
 	public void insertIntermediateTags(String idContenido, String tags) {
+		logger.debug(" ---insertIntermediateTags [ TagBO ] --- ");
+		logger.debug(" --- Se Inserta Informacion en las  tablas I_NOTA_TAG , I_H_NOTA_TAG  --- ");
 
 		int res = 0;
 		String[] output = null;
@@ -57,20 +58,15 @@ public class TagBO {
 				output = tags.split(",");
 				for (int i = 0; i < output.length; i++) {
 
-					INotaTag iNotaTag = new INotaTag();
-					iNotaTag.setFcIdContenido(idContenido);
-					iNotaTag.setFcIdTag(output[i]);
-					res = iNotaTagCallWS.insert(iNotaTag);
+					res = iNotaTagBO.insert(idContenido, output[i]);
 					if (res > 0) {
-						IHNotaTag iHNotaTag = new IHNotaTag();
-						iHNotaTag.setFcIdContenido(idContenido);
-						iHNotaTag.setFcIdTag(output[i]);
-						res = iHNotaTagCallWS.insert(iHNotaTag);
+
+						iHNotaTagBO.insert(idContenido, output[i]);
 					}
 
 				}
 			} catch (Exception e) {
-				logger.error("Exception insertIntermediateTags  [ TagBO ]: ", e);
+				logger.error("--- Exception insertIntermediateTags  [ TagBO ]: ", e);
 				new TagBOException(e.getMessage());
 			}
 		}

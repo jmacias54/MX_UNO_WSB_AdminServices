@@ -3,9 +3,7 @@
  */
 package mx.com.amx.unotv.adminservice.ws;
 
-import java.util.List;
 import java.util.Properties;
-
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,26 +13,25 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
-
-import mx.com.amx.unotv.adminservice.model.HNota;
-import mx.com.amx.unotv.adminservice.model.response.HNotaWSResponse;
-import mx.com.amx.unotv.adminservice.ws.exception.DetailCallWSException;
+import mx.com.amx.unotv.adminservice.model.IHNotaUsuario;
+import mx.com.amx.unotv.adminservice.ws.exception.IHNotaUsuarioCallWSException;
 
 /**
  * @author Jesus A. Macias Benitez
  *
  */
-public class DetailCallWS {
-
-	private static Logger logger = Logger.getLogger(DetailCallWS.class);
+public class IHNotaUsuarioCallWS {
+	
+	
+	private static Logger logger = Logger.getLogger(NNotaCallWS.class);
 
 	private RestTemplate restTemplate;
 	private String URL_WS_BASE = "";
-	private String URL_WS_DETAIL = "";
+	private String URL_WS_I_H_NOTA_USUARIO = "/iHNotaUsuario";
 	private HttpHeaders headers = new HttpHeaders();
 	private final Properties props = new Properties();
 
-	public DetailCallWS() {
+	public IHNotaUsuarioCallWS() {
 		super();
 		restTemplate = new RestTemplate();
 		ClientHttpRequestFactory factory = restTemplate.getRequestFactory();
@@ -55,46 +52,49 @@ public class DetailCallWS {
 		try {
 			props.load(this.getClass().getResourceAsStream("/general.properties"));
 		} catch (Exception e) {
-			logger.error("[DetailCallWS::init]Error al iniciar y cargar arhivo de propiedades." + e.getMessage());
+			logger.error("[ IHNotaUsuarioCallWS ::init]Error al iniciar y cargar arhivo de propiedades." + e.getMessage());
 
 		}
 		String ambiente = props.getProperty("ambiente");
 		URL_WS_BASE = props.getProperty(ambiente + ".url.ws.base");
-		URL_WS_DETAIL = props.getProperty(ambiente + ".url.ws.detail");
+		//URL_WS_I_H_NOTA_USUARIO = props.getProperty(ambiente + "url.ws.i.hnotausuario");
 	}
 	
-		public List<HNota> findAllNota() throws DetailCallWSException {
 	
-
-		String metodo = "/get_item";
-		String URL_WS = URL_WS_BASE + URL_WS_DETAIL + metodo;
-
-		logger.info("--- findAllNota --- [ DetailCallWS ] --- ");
-		logger.info("--- URL : " + URL_WS);
+	public IHNotaUsuario findByIdContenido(String idContenido ) throws IHNotaUsuarioCallWSException {
+		IHNotaUsuario user = null;
 		
-		HNotaWSResponse response = new HNotaWSResponse();
+	
+		String URL_WS = URL_WS_BASE + URL_WS_I_H_NOTA_USUARIO + "/"+idContenido;
 
+		logger.info("--- pcodeFindAll --- [ CatalogsCallWS ] --- ");
+		logger.info("--- URL : "+URL_WS);
 		
+
 
 		try {
 			logger.info("URL_WS: " + URL_WS);
-			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
-			response = restTemplate.postForObject(URL_WS , entity, HNotaWSResponse.class);
 
-			logger.info(" Registros obtenidos --> " + response.getLista().toString());
-			logger.info(" Total Registros obtenidos --> " + response.getLista().size());
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			user = restTemplate.postForObject(URL_WS , entity, IHNotaUsuario.class);
+
+			logger.info(" Registros obtenidos --> " +user.toString());
+			
 
 		} catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException findAllNota [ DetailCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException findAllNota[ DetailCallWS ]: ", rre);
-			throw new DetailCallWSException(rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException findByIdContenido [ IHNotaUsuarioCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException findByIdContenido[ IHNotaUsuarioCallWS ]: ", rre);
+			throw new IHNotaUsuarioCallWSException(rre.getResponseBodyAsString());
 		} catch (Exception e) {
-			logger.error("Exception findAllNota  [ DetailCallWS ]: ", e);
-			throw new DetailCallWSException(e.getMessage());
+			logger.error("Exception findByIdContenido  [ CatalogsCallWS ]: ", e);
+			throw new IHNotaUsuarioCallWSException(e.getMessage());
 		}
-
-		return response.getLista();
+		
 	
+		
+		return user;
 	}
+	
+
 
 }

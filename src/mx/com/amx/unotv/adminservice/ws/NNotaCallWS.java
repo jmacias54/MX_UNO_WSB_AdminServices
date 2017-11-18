@@ -70,7 +70,7 @@ public class NNotaCallWS {
 		String metodo = "/insert";
 		String URL_WS = URL_WS_BASE + URL_WS_NNOTA + metodo;
 
-		logger.info("--- insertNota --- [ NNotaCallWS ] --- ");
+		logger.info("--- insert --- [ NNotaCallWS ] --- ");
 		logger.info("--- URL : " + URL_WS);
 
 		try {
@@ -86,6 +86,37 @@ public class NNotaCallWS {
 			throw new NNotaCallWSException(rre.getResponseBodyAsString());
 		} catch (Exception e) {
 			logger.error("Exception insert  [ NNotaCallWS ]: ", e);
+			throw new NNotaCallWSException(e.getMessage());
+		}
+
+		return res;
+
+	}
+	
+	
+	
+	public int delete(String idContenido) throws NNotaCallWSException {
+
+		int res = 0;
+		String metodo = "/delete";
+		String URL_WS = URL_WS_BASE + URL_WS_NNOTA + metodo+"/"+idContenido;
+
+		logger.info("--- delete --- [ NNotaCallWS ] --- ");
+		logger.info("--- URL : " + URL_WS);
+
+		try {
+			
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			res = restTemplate.postForObject(URL_WS, entity, Integer.class);
+
+			logger.info(" Registros obtenidos --> " + res);
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException delete [ NNotaCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException delete[ NNotaCallWS ]: ", rre);
+			throw new NNotaCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception delete  [ NNotaCallWS ]: ", e);
 			throw new NNotaCallWSException(e.getMessage());
 		}
 

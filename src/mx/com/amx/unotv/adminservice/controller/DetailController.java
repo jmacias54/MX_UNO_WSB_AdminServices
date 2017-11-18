@@ -82,6 +82,25 @@ public class DetailController {
 		return res;
 	}
 	
+	@RequestMapping(value = "/review_item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
+	@ResponseBody
+	public int reviewItem(@RequestBody Item item) throws ControllerException {
+		logger.info("--- ItemsController-----");
+		logger.info("--- review_item -----");
+
+		int res = 0;
+		try {
+
+			res = detailBO.reviewItem(item);
+
+		} catch (Exception e) {
+			logger.error(" -- Error  review_item [ItemsController]:", e);
+			throw new ControllerException(e.getMessage());
+		}
+
+		return res;
+	}
+	
 	@RequestMapping(value = "/item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
 	public NNota item() throws ControllerException {

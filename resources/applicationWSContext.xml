@@ -30,6 +30,8 @@
 	<bean id="nNotaCallWS" class="mx.com.amx.unotv.adminservice.ws.NNotaCallWS"></bean>
 	<bean id="iNotaTagCallWS" class="mx.com.amx.unotv.adminservice.ws.INotaTagCallWS"></bean>
 	<bean id="iHNotaTagCallWS" class="mx.com.amx.unotv.adminservice.ws.IHNotaTagCallWS"></bean>
+	<bean id="iHNotaUsuarioCallWS" class="mx.com.amx.unotv.adminservice.ws.IHNotaUsuarioCallWS"></bean>
+	
 	
 	
 	
@@ -45,6 +47,13 @@
 	<bean id="notaBO" class="mx.com.amx.unotv.adminservice.bo.NotaBO"></bean>
 	<bean id="jsonBO" class="mx.com.amx.unotv.adminservice.bo.JsonBO"></bean>
 	<bean id="tagBO" class="mx.com.amx.unotv.adminservice.bo.TagBO"></bean>
+	<bean id="iHNotaTagBO" class="mx.com.amx.unotv.adminservice.bo.IHNotaTagBO"></bean>
+	<bean id="iNotaTagBO" class="mx.com.amx.unotv.adminservice.bo.INotaTagBO"></bean>
+	
+	
+		<bean id="mapItemUtil" class="mx.com.amx.unotv.adminservice.util.MapItemUtil"></bean>
+	
+	
 	
 	
 	
