@@ -64,6 +64,35 @@ public class HNotaCallWS {
 	}
 	
 	
+	public Integer getNoNotas(String date) throws HNotaCallWSException {
+
+		int res = 0;
+		String metodo = "/get_no_notas";
+		String URL_WS = URL_WS_BASE + URL_WS_HNOTA + metodo+"/"+date;
+
+		logger.info("--- insertNota --- [ HNotaCallWS ] --- ");
+		logger.info("--- URL : " + URL_WS);
+
+		try {
+			
+			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
+			res = restTemplate.postForObject(URL_WS, entity, Integer.class);
+
+			logger.info(" Registros obtenidos --> " + res);
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException insertNota [ HNotaCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException insertNota[ HNotaCallWS ]: ", rre);
+			throw new HNotaCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception insertNota  [ HNotaCallWS ]: ", e);
+			throw new HNotaCallWSException(e.getMessage());
+		}
+
+		return res;
+
+	}
+	
 	public int insert(NNota nota) throws HNotaCallWSException {
 
 		int res = 0;

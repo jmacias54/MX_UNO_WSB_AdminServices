@@ -49,7 +49,7 @@ public class NotaBO {
 			}
 
 		} catch (Exception e) {
-
+			logger.error("Exception  saveOrUpdate [ NotaBO  ] : " + e.getMessage());
 			throw new NotaBOException(e.getMessage());
 		}
 
