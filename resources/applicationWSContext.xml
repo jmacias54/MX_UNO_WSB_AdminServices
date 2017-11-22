@@ -50,6 +50,8 @@
 	<bean id="iHNotaTagBO" class="mx.com.amx.unotv.adminservice.bo.IHNotaTagBO"></bean>
 	<bean id="iNotaTagBO" class="mx.com.amx.unotv.adminservice.bo.INotaTagBO"></bean>
 	<bean id="hNotaBO" class="mx.com.amx.unotv.adminservice.bo.HNotaBO"></bean>
+	<bean id="iHNotaUsuarioBO" class="mx.com.amx.unotv.adminservice.bo.IHNotaUsuarioBO"></bean>
+	
 	
 	<bean id="mapItemUtil" class="mx.com.amx.unotv.adminservice.util.MapItemUtil"></bean>
 

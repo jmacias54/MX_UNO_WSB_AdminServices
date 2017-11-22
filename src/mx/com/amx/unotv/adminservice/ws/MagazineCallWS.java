@@ -18,8 +18,6 @@ import org.springframework.web.client.RestTemplate;
 
 import mx.com.amx.unotv.adminservice.model.Magazine;
 import mx.com.amx.unotv.adminservice.model.request.MagazineRequest;
-import mx.com.amx.unotv.adminservice.model.response.ItemsResponse;
-import mx.com.amx.unotv.adminservice.model.response.ItemsWSResponse;
 import mx.com.amx.unotv.adminservice.model.response.ListMagazine;
 import mx.com.amx.unotv.adminservice.ws.exception.MagazineCallWSException;
 
@@ -68,35 +66,35 @@ public class MagazineCallWS {
 	}
 	
 	
-	public List<ItemsResponse> getListItemsByMagazine(String idMagazine) throws MagazineCallWSException {
+	public Magazine getById(String idMagazine) throws MagazineCallWSException {
 
 		String metodo = "/get_magazine";
 		String URL_WS = URL_WS_BASE + URL_WS_MAGAZINE+ metodo;
 
-		logger.info("--- getListItemsByMagazine --- [ MagazineCallWS ] --- ");
+		logger.info("--- getById --- [ MagazineCallWS ] --- ");
 		logger.info("--- URL : "+URL_WS);
 		
-		ItemsWSResponse response = new ItemsWSResponse();
+		Magazine response = null;
 
 		try {
 			logger.info("URL_WS: " + URL_WS);
 
 			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
-			response = restTemplate.postForObject(URL_WS + "/"+idMagazine, entity, ItemsWSResponse.class);
+			response = restTemplate.postForObject(URL_WS + "/"+idMagazine, entity, Magazine.class);
 
-			logger.info(" Registros obtenidos --> " + response.getLista().toString());
-			logger.info(" Total Registros obtenidos --> " + response.getLista().size());
+			logger.info(" Registros obtenidos --> " + response.toString());
+		
 
 		} catch (RestClientResponseException rre) {
-			logger.error("RestClientResponseException getListItemsByMagazine [ MagazineCallWS ]: " + rre.getResponseBodyAsString());
-			logger.error("RestClientResponseException getListItemsByMagazine[ MagazineCallWS ]: ", rre);
+			logger.error("RestClientResponseException getById [ MagazineCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException getById[ MagazineCallWS ]: ", rre);
 			throw new MagazineCallWSException(rre.getResponseBodyAsString());
 		} catch (Exception e) {
-			logger.error("Exception getListItemsByMagazine  [ MagazineCallWS ]: ", e);
+			logger.error("Exception getById  [ MagazineCallWS ]: ", e);
 			throw new MagazineCallWSException(e.getMessage());
 		}
 		
-		return response.getLista();
+		return response;
 
 	}
 
@@ -134,8 +132,30 @@ public class MagazineCallWS {
 
 	}
 	
-	
-	public void saveMagazine(MagazineRequest req) {
+	public void saveMagazine(MagazineRequest req) throws MagazineCallWSException {
+		
+		String metodo = "/save_magazine";
+		String URL_WS = URL_WS_BASE + URL_WS_MAGAZINE+metodo;
+
+		logger.info("--- saveMagazine --- [ MagazineCallWS ] --- ");
+		logger.info("--- URL : "+URL_WS);
+		
+		try {
+			logger.info("URL_WS: " + URL_WS);
+
+			
+			restTemplate.postForObject(URL_WS , req, MagazineRequest.class);
+ 
+
+		} catch (RestClientResponseException rre) {
+			logger.error("RestClientResponseException saveMagazine [ MagazineCallWS ]: " + rre.getResponseBodyAsString());
+			logger.error("RestClientResponseException saveMagazine[ MagazineCallWS ]: ", rre);
+			throw new MagazineCallWSException(rre.getResponseBodyAsString());
+		} catch (Exception e) {
+			logger.error("Exception saveMagazine  [ MagazineCallWS ]: ", e);
+			throw new MagazineCallWSException(e.getMessage());
+		}
+		
 		
 	}
 

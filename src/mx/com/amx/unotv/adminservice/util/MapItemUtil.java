@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+import mx.com.amx.unotv.adminservice.bo.IHNotaUsuarioBO;
 import mx.com.amx.unotv.adminservice.model.Categoria;
 import mx.com.amx.unotv.adminservice.model.Cordenadas;
 import mx.com.amx.unotv.adminservice.model.HNota;
@@ -23,7 +23,6 @@ import mx.com.amx.unotv.adminservice.model.response.Item;
 import mx.com.amx.unotv.adminservice.util.exception.MapItemUtilException;
 import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 import mx.com.amx.unotv.adminservice.ws.IHNotaTagCallWS;
-import mx.com.amx.unotv.adminservice.ws.IHNotaUsuarioCallWS;
 
 
 /**
@@ -41,7 +40,7 @@ public class MapItemUtil {
 	@Autowired
 	CatalogsCallWS catalogsCallWS;
 	@Autowired
-	IHNotaUsuarioCallWS iHNotaUsuarioCallWS;
+	IHNotaUsuarioBO iHNotaUsuarioBO;
 
 	public NNota MapItemToNota(Item item) {
 		NNota nota = new NNota();
@@ -238,7 +237,7 @@ public class MapItemUtil {
 		
 		try {
 			
-			usuario = iHNotaUsuarioCallWS.findByIdContenido(nota.getFcIdContenido());
+			usuario = iHNotaUsuarioBO.findByIdContenido(nota.getFcIdContenido());
 			idUsuario = usuario.getFcIdUsuario();
     		listaTags = iHNotaTagCallWS.getByIdContenido(nota.getFcIdContenido());
 

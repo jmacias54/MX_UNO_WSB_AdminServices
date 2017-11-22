@@ -15,7 +15,6 @@ import mx.com.amx.unotv.adminservice.bo.MagazineBO;
 import mx.com.amx.unotv.adminservice.controller.exception.ControllerException;
 import mx.com.amx.unotv.adminservice.model.Magazine;
 import mx.com.amx.unotv.adminservice.model.request.MagazineRequest;
-import mx.com.amx.unotv.adminservice.model.response.ItemsResponse;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -43,16 +42,16 @@ public class MagazineController {
 	 */
 	@RequestMapping(value = "/get_magazine/{idMagazine}", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
-	public List<ItemsResponse> getListItemsByMagazine(@PathVariable String idMagazine) throws ControllerException {
-		List<ItemsResponse> lista = null;
+	public Magazine getListItemsByMagazine(@PathVariable String idMagazine) throws ControllerException {
+		Magazine magazine = null;
 
 		try {
-			lista = magazineBO.getListItemsByMagazine(idMagazine);
+			magazine = magazineBO.getById(idMagazine);
 		} catch (Exception e) {
 			new ControllerException(e.getMessage());
 		}
 
-		return lista;
+		return magazine;
 	}
 
 	/**

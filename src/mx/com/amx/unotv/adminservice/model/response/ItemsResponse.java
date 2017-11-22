@@ -41,6 +41,9 @@ public class ItemsResponse {
 	
 	/** The status. */
 	private String status;
+	
+	private String user;
+
 
 	/**
 	 * Instantiates a new items response.
@@ -50,39 +53,19 @@ public class ItemsResponse {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Instantiates a new items response.
-	 *
-	 * @param id the id
-	 * @param title the title
-	 * @param description the description
-	 * @param date the date
-	 * @param typeItem the type item
-	 * @param image the image
-	 * @param idSection the id section
-	 * @param idCategories the id categories
-	 * @param descCategories the desc categories
-	 * @param descSection the desc section
-	 * @param urlItem the url item
-	 * @param status the status
-	 */
-	public ItemsResponse(String id, String title, String description, String date, String typeItem, String image,
-			String idSection, String idCategories, String descCategories, String descSection, String urlItem,
-			String status) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.date = date;
-		this.typeItem = typeItem;
-		this.image = image;
-		this.idSection = idSection;
-		this.idCategories = idCategories;
-		this.descCategories = descCategories;
-		this.descSection = descSection;
-		this.urlItem = urlItem;
-		this.status = status;
+
+
+	public String getUser() {
+		return user;
 	}
+
+
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+
 
 	/**
 	 * Gets the id.

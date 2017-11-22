@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import mx.com.amx.unotv.adminservice.bo.exception.MagazineBOException;
 import mx.com.amx.unotv.adminservice.model.Magazine;
 import mx.com.amx.unotv.adminservice.model.request.MagazineRequest;
-import mx.com.amx.unotv.adminservice.model.response.ItemsResponse;
 import mx.com.amx.unotv.adminservice.ws.MagazineCallWS;
 
 /**
@@ -24,19 +23,19 @@ public class MagazineBO {
 	
 	private static Logger logger = Logger.getLogger(MagazineBO.class);
 
-	public List<ItemsResponse> getListItemsByMagazine(String idMagazine) throws MagazineBOException {
+	public Magazine getById(String idMagazine) throws MagazineBOException {
 
-		List<ItemsResponse> lista = null;
+		Magazine magazine = null;
 		
 		try {
-			lista = magazineCallWS.getListItemsByMagazine(idMagazine);
+			magazine = magazineCallWS.getById(idMagazine);
 		} catch (Exception e) {
-			logger.error("Exception getListItemsByMagazine  [ MagazineBO ]: ", e);
+			logger.error("Exception getById  [ MagazineBO ]: ", e);
 			throw new MagazineBOException(e.getMessage());
 		}
 
 
-		return lista;
+		return magazine;
 
 	}
 

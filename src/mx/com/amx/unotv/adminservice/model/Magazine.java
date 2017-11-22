@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Jesus A. Macias Benitez
  *
  */
-public class Magazine implements Serializable {
+public class Magazine  implements Serializable {
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

@@ -17,7 +17,7 @@ public class IMagazineNota implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** The fc id magazine. */
-	private int fcIdMagazine;
+	private String fcIdMagazine;
 
 	/** The fc id contenido. */
 	private String fcIdContenido;
@@ -75,7 +75,7 @@ public class IMagazineNota implements Serializable {
 	 *
 	 * @return the fc id magazine
 	 */
-	public int getFcIdMagazine() {
+	public String getFcIdMagazine() {
 		return fcIdMagazine;
 	}
 
@@ -84,7 +84,7 @@ public class IMagazineNota implements Serializable {
 	 *
 	 * @param fcIdMagazine the new fc id magazine
 	 */
-	public void setFcIdMagazine(int fcIdMagazine) {
+	public void setFcIdMagazine(String fcIdMagazine) {
 		this.fcIdMagazine = fcIdMagazine;
 	}
 
