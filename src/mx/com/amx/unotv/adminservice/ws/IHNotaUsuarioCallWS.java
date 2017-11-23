@@ -78,6 +78,7 @@ public class IHNotaUsuarioCallWS {
 			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
 			user = restTemplate.postForObject(URL_WS , entity, IHNotaUsuario.class);
 
+			if( user != null)
 			logger.info(" Registros obtenidos --> " +user.toString());
 			
 
