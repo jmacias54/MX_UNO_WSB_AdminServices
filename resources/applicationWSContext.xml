@@ -32,7 +32,7 @@
 	<bean id="iHNotaTagCallWS" class="mx.com.amx.unotv.adminservice.ws.IHNotaTagCallWS"></bean>
 	<bean id="iHNotaUsuarioCallWS" class="mx.com.amx.unotv.adminservice.ws.IHNotaUsuarioCallWS"></bean>
 	
-	
+	<bean id="iMagazineNotaCallWS" class="mx.com.amx.unotv.adminservice.ws.IMagazineNotaCallWS"></bean>
 	
 	
 	
@@ -51,22 +51,11 @@
 	<bean id="iNotaTagBO" class="mx.com.amx.unotv.adminservice.bo.INotaTagBO"></bean>
 	<bean id="hNotaBO" class="mx.com.amx.unotv.adminservice.bo.HNotaBO"></bean>
 	<bean id="iHNotaUsuarioBO" class="mx.com.amx.unotv.adminservice.bo.IHNotaUsuarioBO"></bean>
-	
+	<bean id="iMagazineNotaBO" class="mx.com.amx.unotv.adminservice.bo.IMagazineNotaBO"></bean>
 	
 	<bean id="mapItemUtil" class="mx.com.amx.unotv.adminservice.util.MapItemUtil"></bean>
 
 	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">

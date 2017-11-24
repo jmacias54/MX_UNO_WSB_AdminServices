@@ -7,9 +7,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import mx.com.amx.unotv.adminservice.bo.exception.IMagazineNotaBOException;
 import mx.com.amx.unotv.adminservice.bo.exception.MagazineBOException;
+import mx.com.amx.unotv.adminservice.model.IMagazineNota;
 import mx.com.amx.unotv.adminservice.model.Magazine;
 import mx.com.amx.unotv.adminservice.model.request.MagazineRequest;
+import mx.com.amx.unotv.adminservice.ws.IMagazineNotaCallWS;
 import mx.com.amx.unotv.adminservice.ws.MagazineCallWS;
 
 /**
@@ -20,6 +24,8 @@ public class MagazineBO {
 
 	@Autowired
 	MagazineCallWS magazineCallWS;
+	@Autowired
+	IMagazineNotaCallWS iMagazineNotaCallWS;
 	
 	private static Logger logger = Logger.getLogger(MagazineBO.class);
 
@@ -61,6 +67,19 @@ public class MagazineBO {
 			magazineCallWS.saveMagazine(req);
 		} catch (Exception e) {
 			logger.error("Exception saveMagazine  [ MagazineBO ]: ", e);
+			throw new MagazineBOException(e.getMessage());
+		}
+
+	}
+	
+	
+	public List<IMagazineNota> findById(String idMagazine) throws MagazineBOException {
+		logger.info("--  findById  [ MagazineBO ] ----");
+
+		try {
+			return iMagazineNotaCallWS.findById(idMagazine);
+		} catch (Exception e) {
+			logger.error("Exception findById  [ MagazineBO ]: ", e);
 			throw new MagazineBOException(e.getMessage());
 		}
 

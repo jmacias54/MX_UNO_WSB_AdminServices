@@ -2,6 +2,7 @@ package mx.com.amx.unotv.adminservice.controller;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import mx.com.amx.unotv.adminservice.bo.MagazineBO;
 
 import mx.com.amx.unotv.adminservice.controller.exception.ControllerException;
+import mx.com.amx.unotv.adminservice.model.IMagazineNota;
 import mx.com.amx.unotv.adminservice.model.Magazine;
 import mx.com.amx.unotv.adminservice.model.request.MagazineRequest;
 
@@ -28,74 +31,73 @@ import mx.com.amx.unotv.adminservice.model.request.MagazineRequest;
 @RequestMapping("magazine")
 public class MagazineController {
 
+	private static Logger logger = Logger.getLogger(MagazineController.class);
+	
 	@Autowired
 	MagazineBO magazineBO;
-   
 	
-	
+
+
 	/**
 	 * Gets the list items by magazine.
 	 *
-	 * @param String idMagazine
+	 * @param String
+	 *            idMagazine
 	 * @return List<ItemsResponse>
-	 * @throws ControllerException 
+	 * @throws ControllerException
 	 */
 	@RequestMapping(value = "/get_magazine/{idMagazine}", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
-	public Magazine getListItemsByMagazine(@PathVariable String idMagazine) throws ControllerException {
-		Magazine magazine = null;
+	public List<IMagazineNota> getListItemsByMagazine(@PathVariable String idMagazine) throws ControllerException {
 
 		try {
-			magazine = magazineBO.getById(idMagazine);
+			return magazineBO.findById(idMagazine);
 		} catch (Exception e) {
-			new ControllerException(e.getMessage());
+			logger.error("Exception getListItemsByMagazine  [ MagazineController ]: ", e);
+			throw new ControllerException(e.getMessage());
 		}
 
-		return magazine;
 	}
 
 	/**
 	 * Gets the list magazine.
 	 *
 	 * @return List<Magazine>
-	 * @throws ControllerException 
+	 * @throws ControllerException
 	 */
 	@RequestMapping(value = "/get_list_magazine", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
 	public List<Magazine> getListMagazine() throws ControllerException {
-		List<Magazine> lista = null;
 
 		try {
-			lista = magazineBO.getListMagazine();
+			return magazineBO.getListMagazine();
 		} catch (Exception e) {
-			new ControllerException(e.getMessage());
+			logger.error("Exception getListMagazine  [ MagazineController ]: ", e);
+			throw new ControllerException(e.getMessage());
 		}
 
-		return lista;
 	}
+
 	
-	
+
 	/**
 	 * Save magazine.
 	 *
 	 * @param MagazineRequest
-	 * @throws ControllerException 
+	 * @throws ControllerException
 	 */
 	@RequestMapping(value = "/save_magazine", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
 	@ResponseBody
 	public void saveMagazine(@RequestBody MagazineRequest req) throws ControllerException {
-	
 
 		try {
 			magazineBO.saveMagazine(req);
 		} catch (Exception e) {
-			new ControllerException(e.getMessage());
+			
+			logger.error("Exception save_magazine  [ MagazineController ]: ", e);
+			throw new ControllerException(e.getMessage());
 		}
 
-		
 	}
-	
-	
-	
 
 }
