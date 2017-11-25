@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import mx.com.amx.unotv.adminservice.bo.DetailBO;
 import mx.com.amx.unotv.adminservice.controller.exception.ControllerException;
 import mx.com.amx.unotv.adminservice.model.HNota;
-import mx.com.amx.unotv.adminservice.model.NNota;
 import mx.com.amx.unotv.adminservice.model.response.Item;
 
 // TODO: Auto-generated Javadoc
@@ -49,17 +48,17 @@ public class DetailController {
 		logger.info("--- ItemsController-----");
 		logger.info("--- saveItem -----");
 
-		int res = 0;
+		
 		try {
 
-			res = detailBO.saveItem(item);
+			return detailBO.saveItem(item);
 
 		} catch (Exception e) {
 			logger.error(" -- Error  saveNota [ItemsController]:", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return res;
+		
 	}
 	
 	
@@ -69,17 +68,16 @@ public class DetailController {
 		logger.info("--- ItemsController-----");
 		logger.info("--- expire_item -----");
 
-		int res = 0;
+	
 		try {
 
-			res = detailBO.expireItem(item);
+			return detailBO.expireItem(item);
 
 		} catch (Exception e) {
 			logger.error(" -- Error  expire_item [ItemsController]:", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return res;
 	}
 	
 	@RequestMapping(value = "/review_item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
@@ -88,29 +86,20 @@ public class DetailController {
 		logger.info("--- ItemsController-----");
 		logger.info("--- review_item -----");
 
-		int res = 0;
+
 		try {
 
-			res = detailBO.reviewItem(item);
+			return detailBO.reviewItem(item);
 
 		} catch (Exception e) {
 			logger.error(" -- Error  review_item [ItemsController]:", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return res;
+		
 	}
 	
-	@RequestMapping(value = "/item", method = RequestMethod.POST, headers = "Accept=application/json; charset=utf-8")
-	@ResponseBody
-	public NNota item() throws ControllerException {
-		logger.info("--- ItemsController-----");
-		logger.info("--- item -----");
 
-		
-
-		return new NNota();
-	}
 
 	/**
 	 * obtiene informacion de la tabla HNota.
@@ -125,17 +114,17 @@ public class DetailController {
 		logger.info("--- ItemsController-----");
 		logger.info("--- save_item -----");
 
-		Item item = null;
+		
 		try {
 
-			item = detailBO.findNotaById(idContenido);
+			return detailBO.findNotaById(idContenido);
 
 		} catch (Exception e) {
 			logger.error(" -- Error  getItem by IdContenido [ItemsController]:", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return item;
+		
 	}
 
 	/**
@@ -150,18 +139,16 @@ public class DetailController {
 		logger.info("--- ItemsController-----");
 		logger.info("--- getItem -----");
 
-		List<HNota> lista = null;
 
 		try {
 
-			lista = detailBO.findAllNota();
+			return detailBO.findAllNota();
 
 		} catch (Exception e) {
 			logger.error(" -- Error  getItem [ItemsController]:", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return lista;
 	}
 
 }

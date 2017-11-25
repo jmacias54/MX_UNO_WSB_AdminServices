@@ -51,16 +51,16 @@ public class CatalogsController {
 		logger.info("--- ItemsController  [ WSB ] -----");
 		logger.info("--- get_video_pcode -----");
 
-		List<Pcode> lista = null;
+		
 		try {
-			lista = catalogsBO.pcodeFindAll();
+			return catalogsBO.pcodeFindAll();
 
 		} catch (Exception e) {
 			logger.error(" -- Error  get_video_pcode [WSB-CatalogsController]  [ WSB ] :", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return lista;
+	
 	}
 
 	/**
@@ -77,15 +77,15 @@ public class CatalogsController {
 		logger.info("--- ItemsController  [ WSB ]-----");
 		logger.info("--- categoriesFindAllByIdSeccion  -----");
 
-		List<CategoriaSeccionResponse> lista = null;
+		
 
 		try {
-			lista = catalogsBO.categoriesFindAllByIdSeccion(idSeccion);
+			return catalogsBO.categoriesFindAllByIdSeccion(idSeccion);
 		} catch (Exception e) {
 			logger.error(" -- Error  categoriesFindAllByIdSeccion [CatalogsController] [ WSB ] :", e);
 			throw new ControllerException(e.getMessage()); 
 		}
-		return lista;
+		
 	}
 
 	/**
@@ -100,16 +100,16 @@ public class CatalogsController {
 		logger.info("--- ItemsController  [ WSB ]-----");
 		logger.info("--- categoriesFindAll -----");
 
-		List<Categoria> lista = null;
+	
 		try {
-			lista = catalogsBO.categoriesFindAll();
+			return catalogsBO.categoriesFindAll();
 
 		} catch (Exception e) {
 			logger.error(" -- Error  get_categories [CatalogsController]  [ WSB ] :", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return lista;
+		
 	}
 
 	/**
@@ -124,15 +124,15 @@ public class CatalogsController {
 		logger.info("--- ItemsController  [ WSB ] -----");
 		logger.info("--- get_users -----");
 
-		List<UserResponse> lista = null;
+	
 		try {
 
-			lista = catalogsBO.getAllUsers();
+			return catalogsBO.getAllUsers();
 		} catch (Exception e) {
 			logger.error(" -- Error  get_users [CatalogsController]  [ WSB ] :", e);
 			throw new ControllerException(e.getMessage());
 		}
-		return lista;
+		
 	}
 
 	/**
@@ -146,16 +146,15 @@ public class CatalogsController {
 	public List<CategoriaSeccionResponse> getAllSection() throws ControllerException {
 		logger.info("--- ItemsController  [ WSB ]-----");
 		logger.info("--- get_section -----");
-		List<CategoriaSeccionResponse> lista = null;
+	
 
 		try {
-			lista = catalogsBO.getAllSection();
+			return catalogsBO.getAllSection();
 		} catch (Exception e) {
 			logger.error(" -- Error  get_section [CatalogsController]  [ WSB ] :", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return lista;
 	}
 
 	/**
@@ -170,16 +169,15 @@ public class CatalogsController {
 		logger.info("--- ItemsController  [ WSB ] -----");
 		logger.info("--- get_tags -----");
 
-		List<CatalogResponse> lista = null;
 
 		try {
-			lista = catalogsBO.getAllTags();
+			return catalogsBO.getAllTags();
 		} catch (Exception e) {
 			logger.error(" -- Error  get_tags [CatalogsController]  [ WSB ] :", e);
 			throw new ControllerException(e.getMessage());
 		}
 
-		return lista;
+		
 	}
 
 }

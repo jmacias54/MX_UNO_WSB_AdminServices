@@ -45,17 +45,19 @@ public class ItemsController {
 	
 	@RequestMapping(value = "/get_no_notas/{date}", method = RequestMethod.POST, headers ={"Content-type=application/json"})
 	@ResponseBody
-	public Integer getNoNotas(@PathVariable String date) {
+	public Integer getNoNotas(@PathVariable String date) throws ControllerException {
 		logger.info("---getListItemsByFilter [ItemsController] ----");
-		Integer total =0;
+	
+		int res= 0;
 		try {
-			total = hNotaBO.getNoNotas(date);
+			res = hNotaBO.getNoNotas(date);
 		} catch (Exception e) {
 			logger.error("---Error getNoNotas  [ItemsController] :"+e.getMessage());
 			new ControllerException(e.getMessage());
 		}
 
-		return total;
+		return res;
+		
 	}
 	
 	
@@ -75,7 +77,7 @@ public class ItemsController {
 		List<ItemsResponse> lista = null;
 
 		try {
-			lista = itemsBO.getListItemsByFilter(req);
+			return itemsBO.getListItemsByFilter(req);
 		} catch (Exception e) {
 			logger.error("---Error getListItemsByFilter  [ItemsController] :"+e.getMessage());
 			new ControllerException(e.getMessage());
