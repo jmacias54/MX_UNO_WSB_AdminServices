@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
+import mx.com.amx.unotv.adminservice.dto.ParametrosDTO;
 
 
 public class PropertiesUtils {

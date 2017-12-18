@@ -28,7 +28,7 @@ public class NNotaCallWS {
 
 	private RestTemplate restTemplate;
 	private String URL_WS_BASE = "";
-	private String URL_WS_NNOTA = "";
+	private String URL_WS_NNOTA = "/nNota";
 	private HttpHeaders headers = new HttpHeaders();
 	private final Properties props = new Properties();
 
@@ -58,7 +58,7 @@ public class NNotaCallWS {
 		}
 		String ambiente = props.getProperty("ambiente");
 		URL_WS_BASE = props.getProperty(ambiente + ".url.ws.base");
-		URL_WS_NNOTA = props.getProperty(ambiente + ".url.ws.nnota");
+	
 	}
 	
 	

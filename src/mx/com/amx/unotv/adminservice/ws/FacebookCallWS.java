@@ -14,9 +14,9 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import mx.com.amx.unotv.adminservice.dto.ContentDTO;
+import mx.com.amx.unotv.adminservice.dto.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.dto.PushAmpDTO;
 import mx.com.amx.unotv.adminservice.dto.RespuestaWSAmpDTO;
-import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.ws.exception.FacebookCallWSException;
 
 

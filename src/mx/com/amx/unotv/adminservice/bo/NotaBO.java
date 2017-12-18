@@ -84,7 +84,18 @@ public class NotaBO {
 		try {
 
 			nota.setFcIdEstatus("REV");
-			res = saveOrUpdate(nota, tags);
+			
+			
+			
+			if (validateIfExistHNota(nota.getFcIdContenido())) {
+
+				res = hNotaCallWS.update(nota);
+
+			} else {
+
+				res = hNotaCallWS.insert(nota);
+
+			}
 
 		} catch (Exception e) {
 
@@ -128,14 +139,16 @@ public class NotaBO {
 
 		try {
 
-			// se borran tags en las 2tablas intermedias para Negocio e Historico
-			tagBO.deleteIntermediateTags(nota.getFcIdContenido());
-			// se insertan tags en las 2tablas intermedias para Negocio e Historico
-			tagBO.insertIntermediateTags(nota.getFcIdContenido(), tags);
+			
 
 			res = nNotaCallWS.insert(nota);
 			if (res > 0) {
 				res = hNotaCallWS.insert(nota);
+				
+				// se borran tags en las 2tablas intermedias para Negocio e Historico
+				tagBO.deleteIntermediateTags(nota.getFcIdContenido());
+				// se insertan tags en las 2tablas intermedias para Negocio e Historico
+				tagBO.insertIntermediateTags(nota.getFcIdContenido(), tags);
 			}
 
 		} catch (Exception e) {

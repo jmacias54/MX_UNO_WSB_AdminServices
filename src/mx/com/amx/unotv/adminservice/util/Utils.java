@@ -22,9 +22,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mx.com.amx.unotv.adminservice.dto.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.dto.RedSocialEmbedPostDTO;
 import mx.com.amx.unotv.adminservice.model.NNota;
-import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 
 /**

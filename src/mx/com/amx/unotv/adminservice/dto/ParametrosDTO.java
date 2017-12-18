@@ -1,4 +1,4 @@
-package mx.com.amx.unotv.adminservice.model;
+package mx.com.amx.unotv.adminservice.dto;
 
 import java.io.Serializable;
 

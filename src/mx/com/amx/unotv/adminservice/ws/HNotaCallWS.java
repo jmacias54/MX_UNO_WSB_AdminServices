@@ -30,7 +30,7 @@ public class HNotaCallWS {
 
 	private RestTemplate restTemplate;
 	private String URL_WS_BASE = "";
-	private String URL_WS_HNOTA = "";
+	private String URL_WS_HNOTA = "/hNota";
 	private HttpHeaders headers = new HttpHeaders();
 	private final Properties props = new Properties();
 
@@ -60,10 +60,11 @@ public class HNotaCallWS {
 		}
 		String ambiente = props.getProperty("ambiente");
 		URL_WS_BASE = props.getProperty(ambiente + ".url.ws.base");
-		URL_WS_HNOTA = props.getProperty(ambiente + ".url.ws.hnota");
+		
 	}
 	
 	
+
 	public Integer getNoNotas(String date) throws HNotaCallWSException {
 
 		int res = 0;

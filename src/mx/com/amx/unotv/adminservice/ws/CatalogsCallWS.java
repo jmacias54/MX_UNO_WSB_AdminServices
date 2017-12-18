@@ -148,7 +148,7 @@ public class CatalogsCallWS {
 
 		Categoria response = new Categoria();
 
-		String metodo = "/get_categorie";
+		String metodo = "/get_categoria";
 		String URL_WS = URL_WS_BASE + URL_WS_CATALOGS + metodo;
 
 		logger.info("--- getCategorieById --- [ CatalogsCallWS ] --- ");
@@ -160,7 +160,7 @@ public class CatalogsCallWS {
 			HttpEntity<String> entity = new HttpEntity<String>("Accept=application/json; charset=utf-8", headers);
 			response = restTemplate.postForObject(URL_WS + "/"+idCategoria, entity, Categoria.class);
 
-			logger.info(" Registros obtenidos --> " + response.toString());
+			
 
 		} catch (RestClientResponseException rre) {
 			logger.error("RestClientResponseException getCategorieById [ CatalogsCallWS ]: "

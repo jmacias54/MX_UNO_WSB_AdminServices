@@ -9,11 +9,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import mx.com.amx.unotv.adminservice.bo.exception.JsonBOException;
-
+import mx.com.amx.unotv.adminservice.dto.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.dto.RedSocialEmbedPost;
 import mx.com.amx.unotv.adminservice.model.Categoria;
 import mx.com.amx.unotv.adminservice.model.NNota;
-import mx.com.amx.unotv.adminservice.model.ParametrosDTO;
 import mx.com.amx.unotv.adminservice.model.Seccion;
 import mx.com.amx.unotv.adminservice.ws.CatalogsCallWS;
 
