@@ -21,6 +21,8 @@ public class Item {
 	private String date;
 	private String id_user;
 	private String section;
+	private String section_type;
+
 	private String category;
 	private String image;
 	private String path_nota;
@@ -41,6 +43,26 @@ public class Item {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
+	
+	
+	
+	public String getSection_type() {
+		return section_type;
+	}
+
+
+
+
+
+	public void setSection_type(String section_type) {
+		this.section_type = section_type;
+	}
+
+
+
+
 
 	public String getFriendly_url() {
 		return friendly_url;

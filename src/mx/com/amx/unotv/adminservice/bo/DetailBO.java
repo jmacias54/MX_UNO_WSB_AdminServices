@@ -60,7 +60,9 @@ public class DetailBO {
 	MapItemUtil mapItemUtil;
 
 	public int saveItem(Item item) throws DetailBOException {
-		logger.debug("*** Inicia saveItem [ DetailBO ] ***");
+		logger.debug("************************************************" );
+		logger.debug(" Inicia saveItem [ DetailBO ] ");
+		logger.debug("************************************************" );
 
 		ParametrosDTO parametrosDTO = null;
 		PropertiesUtils properties = new PropertiesUtils();
@@ -91,6 +93,7 @@ public class DetailBO {
 			Categoria categoria = catalogsCallWS.getCategorieById(nota.getFcIdCategoria());
 			parametrosDTO.setNombreCategoria(categoria.getFcDescripcion());
 			parametrosDTO.setFcIdSeccion(categoria.getFcIdSeccion());
+			parametrosDTO.setTipoSeccion(item.getSection_type());
 			// Crop Images Facebook , Miniatura
 
 			try {
@@ -102,30 +105,38 @@ public class DetailBO {
 
 				ImageResponse responseFB = uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
 
+				logger.debug("------------------------------------------------" );
 				logger.debug(" ImageResponse [ responseFB ]: " + responseFB.toString());
-
+				logger.debug("------------------------------------------------" );
+				
+				
+				
 				imgRequest.setType("cuadrada");
 				imgRequest.setxPosition(item.getMain_image().getCordenadas_miniatura().getX());
 				imgRequest.setyPosition(item.getMain_image().getCordenadas_miniatura().getY());
 
 				ImageResponse responseCuadrada = uploadImgCallWS.cropImage(imgRequest, parametrosDTO.getUrlCropImage());
 
+				logger.debug("------------------------------------------------" );
 				logger.debug(" ImageResponse [ responseCuadrada ]: " + responseCuadrada.toString());
-
+				logger.debug("------------------------------------------------" );
 			} catch (Exception e) {
 				logger.error("--- Exception  createPlantillaAMP [ saveItem  ] : " + e.getMessage());
 				throw new DetailBOException(e.getMessage());
 			}
 
 			// ruta con dominio wwww.unotv.com ó http://dev-unotv.tmx-internacional.net
-			logger.info("Frendy URL: " + nota.getFcFriendlyUrl());
+			logger.debug("------------------------------------------------" );
+			logger.debug("Frendy URL: " + nota.getFcFriendlyUrl());
 			urlNota = parametrosDTO.getDominio() + "/" + Utils.getRutaContenido(nota, parametrosDTO);
-			logger.info("URL: " + urlNota);
+			logger.debug("URL: " + urlNota);
+			logger.debug("------------------------------------------------" );
 
 			// Ruta donde se va guardar el html servidor var/www/share_wwwww
 			carpetaContenido = parametrosDTO.getPathFiles() + Utils.getRutaContenido(nota, parametrosDTO);
-			logger.info("carpetaContenido: " + carpetaContenido);
-
+			logger.debug("------------------------------------------------" );
+			logger.debug("carpetaContenido: " + carpetaContenido);
+			logger.debug("------------------------------------------------" );
 			// Validamos si la nota contiene video de ooyala
 			logger.debug("**TIPO DE NOTA: " + nota.getFcIdTipoNota());
 

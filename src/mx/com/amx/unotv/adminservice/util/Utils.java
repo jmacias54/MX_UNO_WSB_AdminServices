@@ -66,17 +66,19 @@ public class Utils {
 	
 
 	public static String getRutaContenido(NNota nota, ParametrosDTO parametrosDTO) throws Exception {
-		LOG.debug("**** Inicia getRutaContenido[Utils]");
+		LOG.debug("--- getRutaContenido [ Utils ] ---");
 		String rutaContenido = "";
 
 		try {
 
+			/*
 			rutaContenido =  parametrosDTO.getFcIdSeccion() + "/" + nota.getFcIdCategoria()
 					+ "/detalle/" + nota.getFcFriendlyUrl() ;
-
-			LOG.debug("rutaContenido: " + rutaContenido);
+			*/
+			rutaContenido =  parametrosDTO.getTipoSeccion()+ "/" +parametrosDTO.getFcIdSeccion() + "/" + nota.getFcIdCategoria()+ "/" + nota.getFcFriendlyUrl() ;
+			LOG.debug("--- rutaContenido: " + rutaContenido + " --- ");
 		} catch (Exception e) {
-			LOG.error("Error getRutaContenido: ", e);
+			LOG.error("Error getRutaContenido [ Utils ] : ", e);
 			throw new Exception(e.getMessage());
 		}
 		return rutaContenido;

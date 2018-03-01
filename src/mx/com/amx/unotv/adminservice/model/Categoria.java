@@ -10,44 +10,73 @@ import java.io.Serializable;
  */
 
 public class Categoria implements Serializable {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-
-	/** The fc id categoria. */
 	private String fcIdCategoria;
-
-	
-	/** The fc descripcion. */
-	private String fcDescripcion;
-
-	
-	/** The fc friendly url. */
-	private String fcFriendlyUrl;
-
-	
-	/** The fc ruta dfp. */
-	private String fcRutaDfp;
-
-	
-	/** The fi estatus. */
-	private Integer fiEstatus;
-
-	
-	/** The fi registros. */
-	private String fiRegistros;
-
-	
-	/** The fc id seccion. */
 	private String fcIdSeccion;
-
-	
+	private String fcDescripcion;
+	private String fcFriendlyUrl;
+	private Integer fcRegistros;
+	private Integer fcEstatus;
+	private Integer fcidApps;
+	private String fcRutaDfpApp;
+	private String fcImagenPodcast;
 
 	/**
 	 * Instantiates a new categoria.
 	 */
 	public Categoria() {
+	}
+
+	public Integer getFcRegistros() {
+		return fcRegistros;
+	}
+
+	public void setFcRegistros(Integer fcRegistros) {
+		if(fcRegistros  == null) {
+			fcEstatus =0;
+		}
+		this.fcRegistros = fcRegistros;
+	}
+
+	public Integer getFcEstatus() {
+		return fcEstatus;
+	}
+
+	public void setFcEstatus(Integer fcEstatus) {
+		if(fcEstatus  == null) {
+			fcEstatus =0;
+		}
+		this.fcEstatus = fcEstatus;
+	}
+
+	public Integer getFcidApps() {
+		return fcidApps;
+	}
+
+	public void setFcidApps(Integer fcidApps) {
+		if(fcidApps  == null) {
+			fcidApps =0;
+		}
+		this.fcidApps = fcidApps;
+	}
+
+	public String getFcRutaDfpApp() {
+		return fcRutaDfpApp;
+	}
+
+	public void setFcRutaDfpApp(String fcRutaDfpApp) {
+		this.fcRutaDfpApp = fcRutaDfpApp;
+	}
+
+	public String getFcImagenPodcast() {
+		return fcImagenPodcast;
+	}
+
+	public void setFcImagenPodcast(String fcImagenPodcast) {
+		this.fcImagenPodcast = fcImagenPodcast;
 	}
 
 	/**
@@ -62,7 +91,8 @@ public class Categoria implements Serializable {
 	/**
 	 * Sets the fc id categoria.
 	 *
-	 * @param fcIdCategoria the new fc id categoria
+	 * @param fcIdCategoria
+	 *            the new fc id categoria
 	 */
 	public void setFcIdCategoria(String fcIdCategoria) {
 		this.fcIdCategoria = fcIdCategoria;
@@ -80,7 +110,8 @@ public class Categoria implements Serializable {
 	/**
 	 * Sets the fc descripcion.
 	 *
-	 * @param fcDescripcion the new fc descripcion
+	 * @param fcDescripcion
+	 *            the new fc descripcion
 	 */
 	public void setFcDescripcion(String fcDescripcion) {
 		this.fcDescripcion = fcDescripcion;
@@ -98,64 +129,11 @@ public class Categoria implements Serializable {
 	/**
 	 * Sets the fc friendly url.
 	 *
-	 * @param fcFriendlyUrl the new fc friendly url
+	 * @param fcFriendlyUrl
+	 *            the new fc friendly url
 	 */
 	public void setFcFriendlyUrl(String fcFriendlyUrl) {
 		this.fcFriendlyUrl = fcFriendlyUrl;
-	}
-
-	/**
-	 * Gets the fc ruta dfp.
-	 *
-	 * @return the fc ruta dfp
-	 */
-	public String getFcRutaDfp() {
-		return this.fcRutaDfp;
-	}
-
-	/**
-	 * Sets the fc ruta dfp.
-	 *
-	 * @param fcRutaDfp the new fc ruta dfp
-	 */
-	public void setFcRutaDfp(String fcRutaDfp) {
-		this.fcRutaDfp = fcRutaDfp;
-	}
-
-	/**
-	 * Gets the fi estatus.
-	 *
-	 * @return the fi estatus
-	 */
-	public Integer getFiEstatus() {
-		return this.fiEstatus;
-	}
-
-	/**
-	 * Sets the fi estatus.
-	 *
-	 * @param fiEstatus the new fi estatus
-	 */
-	public void setFiEstatus(int fiEstatus) {
-		this.fiEstatus = fiEstatus;
-	}
-
-	/**
-	 * Gets the fi registros.
-	 *
-	 * @return the fi registros
-	 */
-	public String getFiRegistros() {
-		return this.fiRegistros;
-	}
-
-	/**
-	 * Sets the fi registros.
-	 *
-	 * @param fiRegistros the new fi registros
-	 */
-	public void setFiRegistros(String fiRegistros) {
-		this.fiRegistros = fiRegistros;
 	}
 
 	/**
@@ -170,7 +148,8 @@ public class Categoria implements Serializable {
 	/**
 	 * Sets the fc id seccion.
 	 *
-	 * @param fcIdSeccion the new fc id seccion
+	 * @param fcIdSeccion
+	 *            the new fc id seccion
 	 */
 	public void setFcIdSeccion(String fcIdSeccion) {
 		this.fcIdSeccion = fcIdSeccion;
@@ -178,12 +157,10 @@ public class Categoria implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Categoria [fcIdCategoria=" + fcIdCategoria + ", fcDescripcion=" + fcDescripcion + ", fcFriendlyUrl="
-				+ fcFriendlyUrl + ", fcRutaDfp=" + fcRutaDfp + ", fiEstatus=" + fiEstatus + ", fiRegistros="
-				+ fiRegistros + ", fcIdSeccion=" + fcIdSeccion + "]";
+		return "Categoria [fcIdCategoria=" + fcIdCategoria + ", fcIdSeccion=" + fcIdSeccion + ", fcDescripcion="
+				+ fcDescripcion + ", fcFriendlyUrl=" + fcFriendlyUrl + ", fcRegistros=" + fcRegistros + ", fcEstatus="
+				+ fcEstatus + ", fcidApps=" + fcidApps + ", fcRutaDfpApp=" + fcRutaDfpApp + ", fcImagenPodcast="
+				+ fcImagenPodcast + "]";
 	}
 
-	
-	
-	
 }

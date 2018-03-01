@@ -7,6 +7,7 @@ public class ParametrosDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String fcIdSeccion;
+	private String tipoSeccion;
 	private String urlCropImage;
 	private String nombreCategoria;
 	private String templateHtml;
@@ -77,6 +78,14 @@ public class ParametrosDTO implements Serializable {
 	
 	
 	
+	public String getTipoSeccion() {
+		return tipoSeccion;
+	}
+
+	public void setTipoSeccion(String tipoSeccion) {
+		this.tipoSeccion = tipoSeccion;
+	}
+
 	public String getFcIdSeccion() {
 		return fcIdSeccion;
 	}

@@ -54,7 +54,7 @@ public class NNota implements Serializable {
 	private Integer fiBanInfinitoHome;
 	private Integer fiBanMsn;
 	private Integer fiBanOtros;
-
+	private String tipoSeccion;
 	private String fcCoordenadasFb;
 	private String fcCoordenadasMiniatura;
 
@@ -63,6 +63,23 @@ public class NNota implements Serializable {
 	 */
 	public NNota() {
 	}
+	
+	
+	
+
+	public String getTipoSeccion() {
+		return tipoSeccion;
+	}
+
+
+
+
+	public void setTipoSeccion(String tipoSeccion) {
+		this.tipoSeccion = tipoSeccion;
+	}
+
+
+
 
 	public String getFcCoordenadasFb() {
 		return fcCoordenadasFb;
@@ -320,5 +337,29 @@ public class NNota implements Serializable {
 	public void setFiBanOtros(Integer fiBanOtros) {
 		this.fiBanOtros = fiBanOtros;
 	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "NNota [dateFormat=" + dateFormat + ", fdFechaModificacion=" + fdFechaModificacion
+				+ ", fdFechaPublicacion=" + fdFechaPublicacion + ", fcIdContenido=" + fcIdContenido + ", clGaleria="
+				+ clGaleria + ", clRtfContenido=" + clRtfContenido + ", fcAlternativeTextOoyala="
+				+ fcAlternativeTextOoyala + ", fcContentIdOoyala=" + fcContentIdOoyala + ", fcDescripcion="
+				+ fcDescripcion + ", fcDurationOoyala=" + fcDurationOoyala + ", fcEscribio=" + fcEscribio
+				+ ", fcFileSizeOoyala=" + fcFileSizeOoyala + ", fcFriendlyUrl=" + fcFriendlyUrl + ", fcFuente="
+				+ fcFuente + ", fcFuenteImagen=" + fcFuenteImagen + ", fcIdCategoria=" + fcIdCategoria
+				+ ", fcIdEstatus=" + fcIdEstatus + ", fcIdPcode=" + fcIdPcode + ", fcIdTipoNota=" + fcIdTipoNota
+				+ ", fcIdUsuario=" + fcIdUsuario + ", fcImagen=" + fcImagen + ", fcKeywords=" + fcKeywords
+				+ ", fcLugar=" + fcLugar + ", fcPieImagen=" + fcPieImagen + ", fcPlayerIdOoyala=" + fcPlayerIdOoyala
+				+ ", fcSourceOoyala=" + fcSourceOoyala + ", fcTitulo=" + fcTitulo + ", fcVideoYoutube=" + fcVideoYoutube
+				+ ", fiBanInfinitoHome=" + fiBanInfinitoHome + ", fiBanMsn=" + fiBanMsn + ", fiBanOtros=" + fiBanOtros
+				+ ", tipoSeccion=" + tipoSeccion + ", fcCoordenadasFb=" + fcCoordenadasFb + ", fcCoordenadasMiniatura="
+				+ fcCoordenadasMiniatura + "]";
+	}
+	
+	
+	
 
 }

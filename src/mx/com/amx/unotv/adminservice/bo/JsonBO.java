@@ -77,7 +77,7 @@ public class JsonBO {
 			jsonNota.put("fecha_modificacion", nota.getFdFechaModificacion());			
 			
 			jsonNota.put("adSetCode", "");
-			jsonNota.put("ruta_dfp", categoria.getFcRutaDfp());
+			jsonNota.put("ruta_dfp", categoria.getFcRutaDfpApp());
 			jsonNota.put("desc_categoria", categoria.getFcDescripcion());
 			jsonNota.put("desc_seccion", seccion.getFcDescripcion());
 			
